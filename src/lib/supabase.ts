@@ -25,6 +25,11 @@ const initSupabaseClient = () => {
         select: () => Promise.resolve({ data: null, error: new Error("Supabase not configured") }),
       };
       
+      // Create a mock update builder that supports select()
+      const mockUpdateBuilder = {
+        select: () => Promise.resolve({ data: null, error: new Error("Supabase not configured") }),
+      };
+      
       // Return mock client with improved error messages and proper method chaining
       return {
         auth: {
@@ -40,7 +45,7 @@ const initSupabaseClient = () => {
         from: () => ({
           select: () => mockFilterBuilder,
           insert: () => mockInsertBuilder,
-          update: () => mockFilterBuilder,
+          update: () => mockUpdateBuilder,
           delete: () => mockFilterBuilder,
         }),
       };
@@ -62,6 +67,11 @@ const initSupabaseClient = () => {
       select: () => Promise.resolve({ data: null, error: new Error("Supabase initialization failed") }),
     };
     
+    // Create a mock update builder that supports select()
+    const mockUpdateBuilder = {
+      select: () => Promise.resolve({ data: null, error: new Error("Supabase initialization failed") }),
+    };
+    
     // Return fallback mock client
     return {
       auth: {
@@ -77,7 +87,7 @@ const initSupabaseClient = () => {
       from: () => ({
         select: () => mockFilterBuilder,
         insert: () => mockInsertBuilder,
-        update: () => mockFilterBuilder,
+        update: () => mockUpdateBuilder,
         delete: () => mockFilterBuilder,
       }),
     };

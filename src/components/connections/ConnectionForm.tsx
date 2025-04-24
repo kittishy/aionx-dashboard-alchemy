@@ -43,8 +43,10 @@ export const ConnectionForm = ({ onSuccess }: ConnectionFormProps) => {
     setIsLoading(true);
     try {
       const { error } = await createConnection({
-        ...data,
         user_id: user.id,
+        name: data.name,
+        server_id: data.server_id,
+        channel_id: data.channel_id,
         active: false,
       });
 

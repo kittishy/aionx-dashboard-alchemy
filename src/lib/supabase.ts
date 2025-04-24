@@ -1,6 +1,6 @@
 
 import { createClient } from "@supabase/supabase-js";
-import { Connection } from "@/types";
+import { Connection, Database } from "@/types";
 import { supabase as integratedSupabase } from "@/integrations/supabase/client";
 
 // Initialize Supabase client using the integrated client
@@ -33,7 +33,7 @@ export const getUserConnections = async (userId: string) => {
     .from("connections")
     .select("*")
     .eq("user_id", userId);
-  return { data, error };
+  return { data: data as Connection[] || [], error };
 };
 
 export const createConnection = async (connection: Omit<Connection, "id" | "created_at">) => {
@@ -41,7 +41,7 @@ export const createConnection = async (connection: Omit<Connection, "id" | "crea
     .from("connections")
     .insert([connection])
     .select();
-  return { data, error };
+  return { data: data as Connection[] || [], error };
 };
 
 export const updateConnection = async (id: string, updates: Partial<Connection>) => {
@@ -50,7 +50,7 @@ export const updateConnection = async (id: string, updates: Partial<Connection>)
     .update(updates)
     .eq("id", id)
     .select();
-  return { data, error };
+  return { data: data as Connection[] || [], error };
 };
 
 export const deleteConnection = async (id: string) => {

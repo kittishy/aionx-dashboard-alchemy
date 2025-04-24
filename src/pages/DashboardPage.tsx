@@ -1,3 +1,4 @@
+
 import { useAuth } from "@/contexts/AuthContext";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { getUserConnections } from "@/lib/supabase";
@@ -23,9 +24,10 @@ const DashboardPage = () => {
         
         if (error) throw error;
         
-        setConnections(data || []);
-        setActiveCount(data?.filter((conn) => conn.active).length || 0);
-        setTotalCount(data?.length || 0);
+        const connectionsData = data || [];
+        setConnections(connectionsData);
+        setActiveCount(connectionsData.filter((conn) => conn.active).length || 0);
+        setTotalCount(connectionsData.length || 0);
       } catch (error) {
         console.error("Error fetching connections:", error);
       } finally {

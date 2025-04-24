@@ -108,8 +108,8 @@ const DashboardPage = () => {
             <div className="h-3 w-3 rounded-full bg-green-500 animate-pulse-slow"></div>
           </div>
           <CardHeader className="pb-2">
-            <CardTitle className="text-lg font-medium tracking-tight">Status do Selfbot</CardTitle>
-            <CardDescription>Estado atual do selfbot</CardDescription>
+            <CardTitle className="text-lg font-medium tracking-tight">Status do Bot</CardTitle>
+            <CardDescription>Estado atual do bot</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="flex items-center gap-2">

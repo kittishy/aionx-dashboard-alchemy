@@ -1,8 +1,7 @@
 # Documentação de Referência do Projeto AionX Dashboard Alchemy
 
 ## Visão Geral
-
-Este projeto é um painel de controle moderno para gerenciamento de conexões e monitoramento de status, com foco em integração ao Discord e automação de selfbots. O dashboard foi desenvolvido utilizando React (com TypeScript), priorizando responsividade, experiência do usuário e um design limpo e acessível.
+Este projeto é um painel de controle moderno para gerenciamento de conexões e monitoramento de status, com foco em integração ao Discord e automação de bots. O dashboard foi desenvolvido utilizando React (com TypeScript), priorizando responsividade, experiência do usuário e um design limpo e acessível.
 
 - **URL do Projeto:** https://lovable.dev/projects/1aabfefe-40e4-4747-b488-d3d0b9a6dbeb
 
@@ -27,7 +26,7 @@ Este projeto é um painel de controle moderno para gerenciamento de conexões e 
 - Usa componentes como `Sidebar`, `Button`, `Avatar`, `Toaster` e `Outlet` para roteamento.
 
 ### DashboardPage
-- Exibe métricas de conexões ativas, totais e status do selfbot.
+- Exibe métricas de conexões ativas, totais e status do bot.
 - Lista conexões recentes e fornece um guia rápido de uso.
 - Utiliza componentes visuais como `Card`, `Badge`, `Button` e ícones customizados.
 - Animações e feedback visual para carregamento e status.

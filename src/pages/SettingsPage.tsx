@@ -90,7 +90,7 @@ const SettingsPage = () => {
                     <div className="space-y-0.5">
                       <FormLabel className="text-base">Conexão Automática</FormLabel>
                       <FormDescription>
-                        Conectar automaticamente aos canais quando o selfbot iniciar
+                        Conectar automaticamente aos canais quando o bot iniciar
                       </FormDescription>
                     </div>
                     <FormControl>
@@ -111,7 +111,7 @@ const SettingsPage = () => {
                     <div className="space-y-0.5">
                       <FormLabel className="text-base">Notificações</FormLabel>
                       <FormDescription>
-                        Receber notificações sobre eventos do selfbot
+                        Receber notificações sobre eventos do bot
                       </FormDescription>
                     </div>
                     <FormControl>

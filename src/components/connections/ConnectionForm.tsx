@@ -123,7 +123,7 @@ export const ConnectionForm = ({ onSuccess }: ConnectionFormProps) => {
                     <Input placeholder="123456789012345678" disabled={isLoading} {...field} />
                   </FormControl>
                   <FormDescription>
-                    ID do canal de voz onde o selfbot se conectará
+                    ID do canal de voz onde o bot se conectará
                   </FormDescription>
                   <FormMessage />
                 </FormItem>

@@ -8,8 +8,9 @@ import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Eye, EyeOff } from "lucide-react";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Eye, EyeOff, UserPlus } from "lucide-react";
+import { toast } from "sonner";
 
 const registerSchema = z.object({
   email: z.string().email({ message: "Email inválido" }),
@@ -40,38 +41,38 @@ export const RegisterForm = () => {
 
   const onSubmit = async (data: RegisterFormValues) => {
     setIsLoading(true);
-    const { success } = await signUp(data.email, data.password);
-    setIsLoading(false);
-    
-    if (success) {
-      navigate("/login");
+    try {
+      const { success } = await signUp(data.email, data.password);
+      
+      if (success) {
+        toast.success("Conta criada com sucesso! Faça login para continuar.");
+        navigate("/login");
+      }
+    } catch (error) {
+      toast.error("Falha ao criar conta. Verifique os dados e tente novamente.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <Card className="w-full max-w-md shadow-lg border-border">
-      <CardHeader>
-        <CardTitle className="text-2xl text-center">Criar Conta</CardTitle>
-        <CardDescription className="text-center">
-          Cadastre-se para acessar a dashboard
-        </CardDescription>
-      </CardHeader>
-      
-      <CardContent>
+    <Card className="overflow-hidden border-none shadow-elevated bg-card/80 backdrop-blur-sm animate-fade-in">
+      <CardContent className="p-6 sm:p-8">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <FormField
               control={form.control}
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel className="text-foreground/80 font-medium">Email</FormLabel>
                   <FormControl>
                     <Input
                       placeholder="seu.email@exemplo.com"
                       type="email"
                       autoComplete="email"
                       disabled={isLoading}
+                      className="h-11 rounded-lg bg-background/40"
                       {...field}
                     />
                   </FormControl>
@@ -85,7 +86,7 @@ export const RegisterForm = () => {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Senha</FormLabel>
+                  <FormLabel className="text-foreground/80 font-medium">Senha</FormLabel>
                   <FormControl>
                     <div className="relative">
                       <Input
@@ -93,13 +94,14 @@ export const RegisterForm = () => {
                         type={showPassword ? "text" : "password"}
                         autoComplete="new-password"
                         disabled={isLoading}
+                        className="h-11 rounded-lg bg-background/40"
                         {...field}
                       />
                       <Button
                         type="button"
                         variant="ghost"
                         size="icon"
-                        className="absolute right-0 top-0 h-full px-3"
+                        className="absolute right-0 top-0 h-full px-3 text-muted-foreground hover:text-foreground"
                         onClick={() => setShowPassword(!showPassword)}
                       >
                         {showPassword ? (
@@ -120,7 +122,7 @@ export const RegisterForm = () => {
               name="confirmPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Confirmar Senha</FormLabel>
+                  <FormLabel className="text-foreground/80 font-medium">Confirmar Senha</FormLabel>
                   <FormControl>
                     <div className="relative">
                       <Input
@@ -128,13 +130,14 @@ export const RegisterForm = () => {
                         type={showConfirmPassword ? "text" : "password"}
                         autoComplete="new-password"
                         disabled={isLoading}
+                        className="h-11 rounded-lg bg-background/40"
                         {...field}
                       />
                       <Button
                         type="button"
                         variant="ghost"
                         size="icon"
-                        className="absolute right-0 top-0 h-full px-3"
+                        className="absolute right-0 top-0 h-full px-3 text-muted-foreground hover:text-foreground"
                         onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                       >
                         {showConfirmPassword ? (
@@ -150,17 +153,31 @@ export const RegisterForm = () => {
               )}
             />
             
-            <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? "Criando conta..." : "Criar Conta"}
+            <Button 
+              type="submit" 
+              className="w-full h-11 rounded-lg font-medium"
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <div className="flex items-center gap-2">
+                  <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent"></div>
+                  <span>Criando conta...</span>
+                </div>
+              ) : (
+                <div className="flex items-center gap-2">
+                  <UserPlus className="h-4 w-4" />
+                  <span>Criar Conta</span>
+                </div>
+              )}
             </Button>
           </form>
         </Form>
       </CardContent>
       
-      <CardFooter className="flex justify-center border-t border-border pt-4">
+      <CardFooter className="flex justify-center p-6 pt-0">
         <p className="text-sm text-muted-foreground">
           Já tem uma conta?{" "}
-          <Link to="/login" className="text-primary hover:underline">
+          <Link to="/login" className="text-primary font-medium hover:underline hover:text-primary/80 transition-colors">
             Faça login
           </Link>
         </p>

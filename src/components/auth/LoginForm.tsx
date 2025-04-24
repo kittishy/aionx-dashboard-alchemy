@@ -8,8 +8,9 @@ import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Eye, EyeOff } from "lucide-react";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Eye, EyeOff, LogIn } from "lucide-react";
+import { toast } from "sonner";
 
 const loginSchema = z.object({
   email: z.string().email({ message: "Email inválido" }),
@@ -34,38 +35,38 @@ export const LoginForm = () => {
 
   const onSubmit = async (data: LoginFormValues) => {
     setIsLoading(true);
-    const { success } = await signIn(data.email, data.password);
-    setIsLoading(false);
-    
-    if (success) {
-      navigate("/");
+    try {
+      const { success } = await signIn(data.email, data.password);
+      
+      if (success) {
+        toast.success("Login realizado com sucesso!");
+        navigate("/");
+      }
+    } catch (error) {
+      toast.error("Falha ao fazer login. Verifique suas credenciais.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <Card className="w-full max-w-md shadow-lg border-border">
-      <CardHeader>
-        <CardTitle className="text-2xl text-center">Login</CardTitle>
-        <CardDescription className="text-center">
-          Entre na sua conta para acessar a dashboard
-        </CardDescription>
-      </CardHeader>
-      
-      <CardContent>
+    <Card className="overflow-hidden border-none shadow-elevated bg-card/80 backdrop-blur-sm animate-fade-in">
+      <CardContent className="p-6 sm:p-8">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <FormField
               control={form.control}
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel className="text-foreground/80 font-medium">Email</FormLabel>
                   <FormControl>
                     <Input
                       placeholder="seu.email@exemplo.com"
                       type="email"
                       autoComplete="email"
                       disabled={isLoading}
+                      className="h-11 rounded-lg bg-background/40"
                       {...field}
                     />
                   </FormControl>
@@ -79,7 +80,7 @@ export const LoginForm = () => {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Senha</FormLabel>
+                  <FormLabel className="text-foreground/80 font-medium">Senha</FormLabel>
                   <FormControl>
                     <div className="relative">
                       <Input
@@ -87,13 +88,14 @@ export const LoginForm = () => {
                         type={showPassword ? "text" : "password"}
                         autoComplete="current-password"
                         disabled={isLoading}
+                        className="h-11 rounded-lg bg-background/40"
                         {...field}
                       />
                       <Button
                         type="button"
                         variant="ghost"
                         size="icon"
-                        className="absolute right-0 top-0 h-full px-3"
+                        className="absolute right-0 top-0 h-full px-3 text-muted-foreground hover:text-foreground"
                         onClick={() => setShowPassword(!showPassword)}
                       >
                         {showPassword ? (
@@ -109,17 +111,31 @@ export const LoginForm = () => {
               )}
             />
             
-            <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? "Entrando..." : "Entrar"}
+            <Button 
+              type="submit" 
+              className="w-full h-11 rounded-lg font-medium"
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <div className="flex items-center gap-2">
+                  <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent"></div>
+                  <span>Entrando...</span>
+                </div>
+              ) : (
+                <div className="flex items-center gap-2">
+                  <LogIn className="h-4 w-4" />
+                  <span>Entrar</span>
+                </div>
+              )}
             </Button>
           </form>
         </Form>
       </CardContent>
       
-      <CardFooter className="flex justify-center border-t border-border pt-4">
+      <CardFooter className="flex justify-center p-6 pt-0">
         <p className="text-sm text-muted-foreground">
           Não tem uma conta?{" "}
-          <Link to="/register" className="text-primary hover:underline">
+          <Link to="/register" className="text-primary font-medium hover:underline hover:text-primary/80 transition-colors">
             Registre-se
           </Link>
         </p>

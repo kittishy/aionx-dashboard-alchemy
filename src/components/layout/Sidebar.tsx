@@ -16,7 +16,7 @@ export const Sidebar = () => {
   return (
     <aside className="flex h-screen w-64 flex-col bg-sidebar border-r border-border">
       <div className="flex h-14 items-center border-b border-border px-4">
-        <h2 className="text-lg font-bold text-sidebar-foreground">Discord Selfbot</h2>
+        <h2 className="text-lg font-bold text-sidebar-foreground">AionX</h2>
       </div>
       
       <nav className="flex-1 p-2">

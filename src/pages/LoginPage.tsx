@@ -25,7 +25,7 @@ const LoginPage = () => {
   return (
     <div className="flex min-h-screen flex-col bg-background text-foreground">
       <header className="flex h-14 items-center justify-between px-6">
-        <div className="text-xl font-bold">Discord Selfbot</div>
+        <div className="text-xl font-bold">AionX Dashboard</div>
         <Button variant="ghost" size="icon" onClick={toggleTheme}>
           {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
         </Button>
@@ -36,7 +36,7 @@ const LoginPage = () => {
       </main>
       
       <footer className="py-4 text-center text-sm text-muted-foreground">
-        &copy; {new Date().getFullYear()} Discord Selfbot Dashboard. Todos os direitos reservados.
+        &copy; {new Date().getFullYear()} AionX Dashboard. Todos os direitos reservados.
       </footer>
     </div>
   );

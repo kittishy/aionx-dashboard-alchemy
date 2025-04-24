@@ -1,4 +1,3 @@
-
 import { useAuth } from "@/contexts/AuthContext";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { getUserConnections } from "@/lib/supabase";
@@ -42,7 +41,7 @@ const DashboardPage = () => {
       <div>
         <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
         <p className="text-muted-foreground">
-          Bem-vindo ao seu painel de controle do Discord Selfbot!
+          Bem-vindo ao seu painel de controle do AionX!
         </p>
       </div>
 
@@ -132,7 +131,7 @@ const DashboardPage = () => {
         <Card className="border-border">
           <CardHeader>
             <CardTitle>Guia Rápido</CardTitle>
-            <CardDescription>Como utilizar o Discord Selfbot</CardDescription>
+            <CardDescription>Como utilizar o AionX</CardDescription>
           </CardHeader>
           <CardContent>
             <ol className="space-y-4 pl-5 list-decimal">

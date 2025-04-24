@@ -31,7 +31,7 @@ export const MainLayout = () => {
       
       <main className="flex flex-1 flex-col overflow-hidden bg-background">
         <header className="flex h-14 items-center justify-between border-b border-border bg-background px-6">
-          <div className="text-xl font-bold text-foreground">Discord Selfbot Dashboard</div>
+          <div className="text-xl font-bold text-foreground">AionX Dashboard</div>
           <div className="flex items-center gap-4">
             <Button
               variant="ghost"

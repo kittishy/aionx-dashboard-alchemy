@@ -2,8 +2,7 @@
 import { createClient } from "@supabase/supabase-js";
 import { Connection } from "@/types";
 
-// Substitua estas variáveis pelos seus valores do Supabase
-// Você deve utilizar a integração do Supabase no Lovable para configurar estas variáveis
+// Use the environment variables or the values from the integrated Supabase client
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || "";
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || "";
 
@@ -15,7 +14,13 @@ const initSupabaseClient = () => {
         "Supabase URL and Anon Key are required. Please set them using the Supabase integration."
       );
       
-      // Return mock client with helpful error messages
+      // Create proper mock implementations for the chained methods
+      const mockFilterBuilder = {
+        eq: () => Promise.resolve({ data: [], error: new Error("Supabase not configured") }),
+        select: () => mockFilterBuilder,
+      };
+      
+      // Return mock client with improved error messages and proper method chaining
       return {
         auth: {
           signUp: () => Promise.resolve({ data: null, error: new Error("Supabase not configured") }),
@@ -28,10 +33,10 @@ const initSupabaseClient = () => {
           })
         },
         from: () => ({
-          select: () => ({ eq: () => Promise.resolve({ data: [], error: new Error("Supabase not configured") }) }),
+          select: () => mockFilterBuilder,
           insert: () => Promise.resolve({ data: null, error: new Error("Supabase not configured") }),
-          update: () => Promise.resolve({ data: null, error: new Error("Supabase not configured") }),
-          delete: () => Promise.resolve({ error: new Error("Supabase not configured") }),
+          update: () => mockFilterBuilder,
+          delete: () => mockFilterBuilder,
         }),
       };
     } else {
@@ -40,6 +45,12 @@ const initSupabaseClient = () => {
     }
   } catch (error) {
     console.error("Error initializing Supabase client:", error);
+    
+    // Create proper mock implementations for the chained methods in the fallback
+    const mockFilterBuilder = {
+      eq: () => Promise.resolve({ data: [], error: new Error("Supabase initialization failed") }),
+      select: () => mockFilterBuilder,
+    };
     
     // Return fallback mock client
     return {
@@ -54,10 +65,10 @@ const initSupabaseClient = () => {
         })
       },
       from: () => ({
-        select: () => ({ eq: () => Promise.resolve({ data: [], error: new Error("Supabase initialization failed") }) }),
+        select: () => mockFilterBuilder,
         insert: () => Promise.resolve({ data: null, error: new Error("Supabase initialization failed") }),
-        update: () => Promise.resolve({ data: null, error: new Error("Supabase initialization failed") }),
-        delete: () => Promise.resolve({ error: new Error("Supabase initialization failed") }),
+        update: () => mockFilterBuilder,
+        delete: () => mockFilterBuilder,
       }),
     };
   }

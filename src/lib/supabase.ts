@@ -32,16 +32,16 @@ export const getUserConnections = async (userId: string) => {
   const { data, error } = await supabase
     .from("connections")
     .select("*")
-    .eq("user_id", userId);
-  return { data: data as Connection[] || [], error };
+    .eq("user_id", userId) as { data: Connection[] | null; error: Error | null };
+  return { data: data || [], error };
 };
 
 export const createConnection = async (connection: Omit<Connection, "id" | "created_at">) => {
   const { data, error } = await supabase
     .from("connections")
     .insert([connection])
-    .select();
-  return { data: data as Connection[] || [], error };
+    .select() as { data: Connection[] | null; error: Error | null };
+  return { data: data || [], error };
 };
 
 export const updateConnection = async (id: string, updates: Partial<Connection>) => {
@@ -49,14 +49,14 @@ export const updateConnection = async (id: string, updates: Partial<Connection>)
     .from("connections")
     .update(updates)
     .eq("id", id)
-    .select();
-  return { data: data as Connection[] || [], error };
+    .select() as { data: Connection[] | null; error: Error | null };
+  return { data: data || [], error };
 };
 
 export const deleteConnection = async (id: string) => {
   const { error } = await supabase
     .from("connections")
     .delete()
-    .eq("id", id);
+    .eq("id", id) as { error: Error | null };
   return { error };
 };

@@ -1,10 +1,11 @@
 
 import { createClient } from "@supabase/supabase-js";
+import { Connection } from "@/types";
 
 // Substitua estas variáveis pelos seus valores do Supabase
 // Você deve utilizar a integração do Supabase no Lovable para configurar estas variáveis
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || "";
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || "";
 
 if (!supabaseUrl || !supabaseAnonKey) {
   console.error(
@@ -12,6 +13,8 @@ if (!supabaseUrl || !supabaseAnonKey) {
   );
 }
 
+// Use default empty strings to prevent runtime errors during development
+// The real values will be provided by the Supabase integration
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 // Auth helpers

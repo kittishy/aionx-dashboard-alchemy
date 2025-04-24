@@ -25,8 +25,11 @@ const initSupabaseClient = () => {
         select: () => Promise.resolve({ data: null, error: new Error("Supabase not configured") }),
       };
       
-      // Create a mock update builder that supports select()
+      // Create a mock update builder that properly supports both eq() and select() chaining
       const mockUpdateBuilder = {
+        eq: () => ({
+          select: () => Promise.resolve({ data: null, error: new Error("Supabase not configured") }),
+        }),
         select: () => Promise.resolve({ data: null, error: new Error("Supabase not configured") }),
       };
       
@@ -67,8 +70,11 @@ const initSupabaseClient = () => {
       select: () => Promise.resolve({ data: null, error: new Error("Supabase initialization failed") }),
     };
     
-    // Create a mock update builder that supports select()
+    // Create a mock update builder that properly supports both eq() and select() chaining
     const mockUpdateBuilder = {
+      eq: () => ({
+        select: () => Promise.resolve({ data: null, error: new Error("Supabase initialization failed") }),
+      }),
       select: () => Promise.resolve({ data: null, error: new Error("Supabase initialization failed") }),
     };
     

@@ -5,7 +5,7 @@ import { Home, LogOut, MessageSquare, Settings, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { useState } from "react";
-import { cn } from "@/lib/utils";\
+import { cn } from "@/lib/utils";
 
 export const Sidebar = () => {
   const { signOut, user } = useAuth();

@@ -13,16 +13,16 @@ const ConnectionsPage = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-3xl font-bold tracking-tight">Conexões</h2>
+        <h2 className="text-2xl lg:text-3xl font-bold tracking-tight">Conexões</h2>
         <p className="text-muted-foreground">
           Gerencie suas conexões com servidores do Discord
         </p>
       </div>
       
-      <div className="grid gap-6 md:grid-cols-2">
+      <div className="grid gap-6 grid-cols-1 lg:grid-cols-2">
         <ConnectionForm onSuccess={handleConnectionAdded} />
-        <div className="space-y-4">
-          <h3 className="text-xl font-medium">Suas Conexões</h3>
+        <div className="space-y-2 lg:space-y-4">
+          <h3 className="text-lg lg:text-xl font-medium">Suas Conexões</h3>
           <ConnectionList refreshTrigger={refreshTrigger} />
         </div>
       </div>

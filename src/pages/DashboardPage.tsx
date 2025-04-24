@@ -3,7 +3,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { getUserConnections } from "@/lib/supabase";
 import { useEffect, useState } from "react";
-import { Connection } from "@/types";
+import { Connection, Connections } from "@/types";
 import { Activity, ArrowRight, ChevronRight, Loader2, Plus, Server, SquareArrowOutUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -42,17 +42,17 @@ const DashboardPage = () => {
   return (
     <div className="space-y-8 animate-slide-up">
       <div>
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
           <div>
-            <h2 className="text-3xl font-bold tracking-tight font-display">Dashboard</h2>
-            <p className="text-muted-foreground">
-              Bem-vindo ao seu painel de controle do AionX
+            <h2 className="text-2xl lg:text-3xl font-bold tracking-tight font-display">Dashboard</h2>
+            <p className="hidden lg:block text-muted-foreground">
+              Bem-vindo ao seu painel de controle do AionX.
             </p>
           </div>
-          <Button asChild className="sm:self-end gap-2 rounded-lg">
+          <Button asChild className="lg:self-end mt-4 lg:mt-0 gap-2 rounded-lg">
             <Link to="/connections">
               <Plus className="h-4 w-4" />
-              <span>Nova Conexão</span>
+              <span className="hidden lg:block">Nova Conexão</span>
             </Link>
           </Button>
         </div>
@@ -62,13 +62,13 @@ const DashboardPage = () => {
         <Card className="border-border/40 shadow-subtle overflow-hidden">
           <div className="absolute right-4 top-4 h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center">
             <Activity className="h-4 w-4 text-primary" />
-          </div>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-lg font-medium tracking-tight">Conexões Ativas</CardTitle>
-            <CardDescription>Total de conexões ativas no momento</CardDescription>
-          </CardHeader>
-          <CardContent>
-            {isLoading ? (
+            </div>
+            <CardHeader className="pb-2">
+                <CardTitle className="text-base lg:text-lg font-medium tracking-tight">Conexões Ativas</CardTitle>
+                <CardDescription className="text-sm">Total de conexões ativas no momento</CardDescription>
+            </CardHeader>
+            <CardContent className="py-2">
+                {isLoading ? (
               <div className="flex h-12 items-center">
                 <Loader2 className="h-5 w-5 animate-spin text-primary" />
               </div>
@@ -79,14 +79,14 @@ const DashboardPage = () => {
               </div>
             )}
           </CardContent>
-        </Card>
+        </Card>      
 
         <Card className="border-border/40 shadow-subtle overflow-hidden">
           <div className="absolute right-4 top-4 h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center">
             <Server className="h-4 w-4 text-primary" />
           </div>
           <CardHeader className="pb-2">
-            <CardTitle className="text-lg font-medium tracking-tight">Total de Conexões</CardTitle>
+            <CardTitle className="text-base lg:text-lg font-medium tracking-tight">Total de Conexões</CardTitle>
             <CardDescription>Número total de conexões configuradas</CardDescription>
           </CardHeader>
           <CardContent>
@@ -108,7 +108,7 @@ const DashboardPage = () => {
             <div className="h-3 w-3 rounded-full bg-green-500 animate-pulse-slow"></div>
           </div>
           <CardHeader className="pb-2">
-            <CardTitle className="text-lg font-medium tracking-tight">Status do Bot</CardTitle>
+            <CardTitle className="text-base lg:text-lg font-medium tracking-tight">Status do Bot</CardTitle>
             <CardDescription>Estado atual do bot</CardDescription>
           </CardHeader>
           <CardContent>
@@ -120,10 +120,10 @@ const DashboardPage = () => {
         </Card>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Card className="border-border/40 shadow-subtle">
           <CardHeader className="pb-0">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between"> 
               <CardTitle className="text-lg font-medium tracking-tight">Conexões Recentes</CardTitle>
               <Button variant="ghost" size="sm" asChild className="text-sm gap-1">
                 <Link to="/connections">
@@ -133,7 +133,7 @@ const DashboardPage = () => {
               </Button>
             </div>
             <CardDescription>Suas últimas conexões configuradas</CardDescription>
-          </CardHeader>
+          </CardHeader> 
           <CardContent>
             {isLoading ? (
               <div className="flex h-48 items-center justify-center">
@@ -176,7 +176,7 @@ const DashboardPage = () => {
         <Card className="border-border/40 shadow-subtle">
           <CardHeader className="pb-0">
             <CardTitle className="text-lg font-medium tracking-tight">Guia Rápido</CardTitle>
-            <CardDescription>Como utilizar o AionX</CardDescription>
+            <CardDescription className="text-sm">Como utilizar o AionX</CardDescription>
           </CardHeader>
           <CardContent className="pt-6">
             <div className="space-y-4">
@@ -226,6 +226,13 @@ const DashboardPage = () => {
           </CardContent>
         </Card>
       </div>
+      
+        <Button asChild className="lg:hidden w-full mt-4 gap-2 rounded-lg">
+              <Link to="/connections">
+                <Plus className="h-4 w-4" />
+                <span className="">Nova Conexão</span>
+              </Link>
+            </Button>
     </div>
   );
 };

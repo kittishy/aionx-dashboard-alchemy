@@ -26,13 +26,13 @@ const LoginPage = () => {
   }
 
   return (
-    <div className="relative flex min-h-screen flex-col bg-background">
+    <div className="flex min-h-screen flex-col bg-background">
       {/* Background gradient effect */}
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/20 via-background to-background"></div>
       
-      <header className="flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
+      <header className="flex h-16 items-center justify-between px-4 lg:px-8">
         <div className="flex items-center">
-          <div className="relative flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-primary">
+          <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-primary">
             <span className="text-xl font-bold text-primary-foreground">A</span>
           </div>
           <h1 className="ml-3 text-xl font-semibold tracking-tight">
@@ -47,10 +47,10 @@ const LoginPage = () => {
       <main className="flex flex-1 items-center justify-center p-6">
         <div className="w-full max-w-md space-y-8">
           <div className="text-center">
-            <h2 className="text-3xl font-bold tracking-tighter font-display gradient-text">Bem-vindo de volta</h2>
-            <p className="mt-2 text-muted-foreground">
+            <h2 className="text-2xl lg:text-3xl font-bold tracking-tighter font-display gradient-text lg:block hidden">Bem-vindo de volta</h2>
+            <p className="mt-2 text-sm lg:text-base text-muted-foreground">
               Entre com suas credenciais para acessar o dashboard
-            </p>
+            </p>            
           </div>
           
           <div className="mt-10">
@@ -59,11 +59,11 @@ const LoginPage = () => {
         </div>
       </main>
       
-      <footer className="py-6 text-center text-sm text-muted-foreground">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <footer className="lg:py-6 lg:text-center lg:text-sm hidden lg:block text-muted-foreground">
+        <div className="mx-auto max-w-7xl px-4 lg:px-8">
           &copy; {new Date().getFullYear()} AionX Dashboard. Todos os direitos reservados.
         </div>
-      </footer>
+      </footer>      
     </div>
   );
 };

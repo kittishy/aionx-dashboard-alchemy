@@ -39,11 +39,11 @@ const SettingsPage = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       <div>
-        <h2 className="text-3xl font-bold tracking-tight">Configurações</h2>
-        <p className="text-muted-foreground">
-          Gerencie as configurações da sua dashboard
+        <h2 className="text-2xl font-bold tracking-tight lg:text-3xl">Configurações</h2>
+        <p className="hidden text-muted-foreground lg:block">
+          Gerencie as configurações da sua dashboard 
         </p>
       </div>
       
@@ -56,12 +56,12 @@ const SettingsPage = () => {
         </CardHeader>
         
         <CardContent>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <Form {...form} >
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
               <FormField
                 control={form.control}
                 name="darkMode"
-                render={({ field }) => (
+                render={({ field }) => ( 
                   <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
                     <div className="space-y-0.5">
                       <FormLabel className="text-base">Tema Escuro</FormLabel>
@@ -85,7 +85,7 @@ const SettingsPage = () => {
               <FormField
                 control={form.control}
                 name="autoConnect"
-                render={({ field }) => (
+                render={({ field }) => ( 
                   <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
                     <div className="space-y-0.5">
                       <FormLabel className="text-base">Conexão Automática</FormLabel>
@@ -106,7 +106,7 @@ const SettingsPage = () => {
               <FormField
                 control={form.control}
                 name="notifications"
-                render={({ field }) => (
+                render={({ field }) => ( 
                   <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
                     <div className="space-y-0.5">
                       <FormLabel className="text-base">Notificações</FormLabel>
@@ -124,7 +124,7 @@ const SettingsPage = () => {
                 )}
               />
               
-              <Button type="submit">Salvar Configurações</Button>
+              <Button type="submit" className="w-full">Salvar Configurações</Button>
             </form>
           </Form>
         </CardContent>

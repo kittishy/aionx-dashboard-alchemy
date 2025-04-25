@@ -14,6 +14,19 @@ import { useIsMobile } from "@/hooks/use-mobile"
 export const MainLayout = () => {
   const { theme, toggleTheme } = useTheme();
   const { user, loading } = useAuth();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const isMobile = useIsMobile();
+  
+  if (loading) {
+    return (
+      <div className="flex h-screen w-full items-center justify-center bg-background" aria-live="polite" role="status">
+        <div className="flex flex-col items-center gap-4">
+          <div className="h-12 w-12 animate-spin rounded-full border-4 border-primary border-t-transparent"></div>
+          <p className="text-sm font-medium text-muted-foreground">Carregando...</p>
+        </div>
+      </div>
+    );
+  }
 
   if (!user) {
     return <Navigate to="/login" replace />;
@@ -52,7 +65,9 @@ export const MainLayout = () => {
               <span className="sr-only">Toggle menu</span>
             </Button>
             <div className="relative flex h-8 w-8 items-center justify-center overflow-hidden rounded-full bg-primary lg:hidden">
-              <img src="/logo-dashboard.png" alt="Logo AionX" className="h-8 w-8 object-cover" />
+              <span className="text-sm font-bold text-primary-foreground" aria-hidden="true">
+                A
+              </span>
             </div>
             <h1 className="text-lg font-semibold tracking-tight lg:hidden">
               <span className="gradient-text font-display">AionX</span>
@@ -80,9 +95,11 @@ export const MainLayout = () => {
               aria-label="Abrir suporte no Discord"
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5" aria-hidden="true">
-                <path d="M4 15v2a4 4 0 0 0 4 4h8a4 4 0 0 0 4-4v-2" />
-                <circle cx="12" cy="7" r="4" />
-                <path d="M6 15v-2a6 6 0 0 1 12 0v2" />
+                <circle cx="9" cy="12" r="1" />
+                <circle cx="15" cy="12" r="1" />
+                <path d="M7.5 7.2C3.7 9.3 3.3 14.1 3 18.7c1.9.5 4 .7 6 .7 2 0 4.1-.2 6-.7" />
+                <path d="M16.5 7.2C20.3 9.3 20.7 14.1 21 18.7c-1.9.5-4 .7-6 .7-2 0-4.1-.2-6-.7" />
+                <path d="M8 7s1.5-2 4-2 4 2 4 2" />
               </svg>
             </Button>
             
@@ -98,7 +115,9 @@ export const MainLayout = () => {
             </Button>
             
             <Avatar className="h-9 w-9 border-2 border-primary">
-              <img src="/logo-dashboard.png" alt="Logo AionX" className="h-9 w-9 object-cover rounded-full" />
+              <AvatarFallback className="bg-secondary text-secondary-foreground">
+                {user?.email?.charAt(0).toUpperCase() || "U"}
+              </AvatarFallback>
             </Avatar>
           </div>
         </header>

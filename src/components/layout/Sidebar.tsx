@@ -32,9 +32,13 @@ export const Sidebar = ({ onCloseSidebar }: SidebarProps) => {
       aria-label="Menu lateral"
     >
       <div className="flex h-16 items-center justify-between border-b border-border/60 px-4">
-        <div className="flex items-center gap-2 px-4 py-6">
-          <img src="/logo-dashboard.png" alt="Logo AionX" className="h-10 w-10 object-cover rounded-full" />
-          <span className="text-xl font-bold gradient-text font-display">AionX</span>
+        <div className="flex items-center gap-2">
+          <div className="relative flex h-8 w-8 items-center justify-center overflow-hidden rounded-full bg-primary">
+            <span className="text-sm font-bold text-primary-foreground" aria-hidden="true">A</span>
+          </div>
+          <h2 className="text-lg font-semibold text-sidebar-foreground font-display">
+            <span className="gradient-text">AionX</span>
+          </h2>
         </div>
         {isMobile && (
           <Button
@@ -74,35 +78,22 @@ export const Sidebar = ({ onCloseSidebar }: SidebarProps) => {
             ))}
           </ul>
         </nav>
-        <div className="mt-auto w-full border-t border-border/60 px-4 py-4">
-          <div className="flex items-center gap-3 p-2 rounded-lg bg-sidebar-accent/30 mb-3">
-            <div className="relative">
-              <img 
-                src="/logo-dashboard.png" 
-                alt="Avatar do usuário" 
-                className="h-10 w-10 object-cover rounded-full border-2 border-primary/40" 
-              />
-              <div className="absolute -bottom-1 -right-1 h-3.5 w-3.5 rounded-full bg-green-500 border-2 border-sidebar" aria-hidden="true"></div>
+        
+        <div className="px-2 mt-auto">
+          {user && (
+            <div className="mb-4 rounded-lg bg-muted/50 p-3">
+              <p className="text-xs font-medium text-foreground/70">Conectado como</p>
+              <p className="truncate text-sm font-medium">{user.email}</p>
             </div>
-            <div className="flex flex-col">
-              <span 
-                className="text-sm font-semibold text-sidebar-foreground truncate" 
-                title={user?.user_metadata?.username || "Usuário"}
-              >
-                {user?.user_metadata?.username || "Usuário"}
-              </span>
-              <span className="text-xs text-sidebar-foreground/60">Online</span>
-            </div>
-          </div>
+          )}
+          
           <Button
-            variant="ghost"
-            className="w-full justify-start gap-2 text-sidebar-foreground/80 hover:bg-sidebar-accent/50 hover:text-primary hover:shadow-sm transition-all duration-200 rounded-lg py-2.5 focus-visible:ring-2 focus-visible:ring-primary group"
+            variant="outline"
+            className="w-full justify-start gap-2 border-border/60 bg-transparent"
             onClick={handleSignOut}
             aria-label="Encerrar sessão"
           >
-            <div className="p-1.5 rounded-md bg-sidebar-accent/40 group-hover:bg-primary/10 transition-colors duration-200">
-              <LogOut className="h-4 w-4 group-hover:text-primary transition-colors duration-200" aria-hidden="true" />
-            </div>
+            <LogOut className="h-4 w-4" aria-hidden="true" />
             <span>Sair</span>
           </Button>
         </div>

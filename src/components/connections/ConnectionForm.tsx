@@ -130,24 +130,6 @@ export const ConnectionForm = ({ onSuccess }: ConnectionFormProps) => {
               )}
             />
             
-            <div className="space-y-4">
-              <div>
-                <label htmlFor="token" className="block text-sm font-medium text-gray-700">Seu token</label>
-                <input
-                  id="token"
-                  name="token"
-                  type="text"
-                  autoComplete="off"
-                  required
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary/50 sm:text-sm"
-                  value={form.token}
-                  onChange={handleChange}
-                  aria-required="true"
-                  aria-label="Seu token do bot"
-                />
-              </div>
-            </div>
-            
             <CardFooter className="px-0 pt-4">
               <Button type="submit" disabled={isLoading} className="ml-auto">
                 {isLoading ? "Adicionando..." : "Adicionar Conexão"}

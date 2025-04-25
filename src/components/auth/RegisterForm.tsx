@@ -1,10 +1,12 @@
 
-import { FormEvent, useState } from "react";
+import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
-import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Eye, EyeOff, UserPlus } from "lucide-react";
@@ -27,37 +29,29 @@ export const RegisterForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [registerForm, setRegisterForm] = useState({
-    email: "",
-    password: "",
-    confirmPassword: "",
-    username: "",
+
+  const form = useForm<RegisterFormValues>({
+    resolver: zodResolver(registerSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setRegisterForm({ ...registerForm, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    if (!registerForm.username) {
-      toast.error("Nome de usuário é obrigatório");
-      return;
-    }
+  const onSubmit = async (data: RegisterFormValues) => {
     setIsLoading(true);
     try {
-      const { error } = await signUp(registerForm.email, registerForm.password, registerForm.username);
-      if (error) {
-        toast.error(error.message);
-      } else {
-        toast.success("Conta criada com sucesso! Faça login para continuar");
+      const { success } = await signUp(data.email, data.password);
+      
+      if (success) {
+        toast.success("Conta criada com sucesso! Faça login para continuar.");
         navigate("/login");
       }
-    } catch (err: any) {
+    } catch (error) {
       toast.error("Falha ao criar conta. Verifique os dados e tente novamente.");
     } finally {
       setIsLoading(false);
-      setRegisterForm({...registerForm, password: "", confirmPassword: ""})
     }
   };
 
@@ -65,13 +59,13 @@ export const RegisterForm = () => {
     <Card className="overflow-hidden border-none shadow-elevated bg-card/80 backdrop-blur-sm animate-fade-in">
       <CardContent className="p-6 sm:p-8">
         <Form {...form}>
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <FormField
-              
+              control={form.control}
               name="email"
-              render={() => (
+              render={({ field }) => (
                 <FormItem>
-                  <FormLabel htmlFor="email" className="text-foreground/80 font-medium">Email</FormLabel>
+                  <FormLabel className="text-foreground/80 font-medium">Email</FormLabel>
                   <FormControl>
                     <Input
                       placeholder="seu.email@exemplo.com"
@@ -79,8 +73,7 @@ export const RegisterForm = () => {
                       autoComplete="email"
                       disabled={isLoading}
                       className="h-11 rounded-lg bg-background/40"
-                      value={registerForm.email}
-                      onChange={handleChange}
+                      {...field}
                     />
                   </FormControl>
                   <FormMessage />
@@ -89,11 +82,11 @@ export const RegisterForm = () => {
             />
             
             <FormField
-              
+              control={form.control}
               name="password"
-              render={() => (
+              render={({ field }) => (
                 <FormItem>
-                  <FormLabel htmlFor="password" className="text-foreground/80 font-medium">Senha</FormLabel>
+                  <FormLabel className="text-foreground/80 font-medium">Senha</FormLabel>
                   <FormControl>
                     <div className="relative">
                       <Input
@@ -102,8 +95,7 @@ export const RegisterForm = () => {
                         autoComplete="new-password"
                         disabled={isLoading}
                         className="h-11 rounded-lg bg-background/40"
-                        value={registerForm.password}
-                        onChange={handleChange}
+                        {...field}
                       />
                       <Button
                         type="button"
@@ -126,11 +118,11 @@ export const RegisterForm = () => {
             />
             
             <FormField
-             
+              control={form.control}
               name="confirmPassword"
-              render={() => (
+              render={({ field }) => (
                 <FormItem>
-                  <FormLabel htmlFor="confirmPassword" className="text-foreground/80 font-medium">Confirmar Senha</FormLabel>
+                  <FormLabel className="text-foreground/80 font-medium">Confirmar Senha</FormLabel>
                   <FormControl>
                     <div className="relative">
                       <Input
@@ -139,8 +131,7 @@ export const RegisterForm = () => {
                         autoComplete="new-password"
                         disabled={isLoading}
                         className="h-11 rounded-lg bg-background/40"
-                        value={registerForm.confirmPassword}
-                        onChange={handleChange}
+                        {...field}
                       />
                       <Button
                         type="button"
@@ -161,24 +152,6 @@ export const RegisterForm = () => {
                 </FormItem>
               )}
             />
-            
-            <div className="space-y-4">
-              <div>
-                <label htmlFor="username" className="block text-sm font-medium text-gray-700">Nome de Usuário</label>
-                <input
-                  id="username"
-                  name="username"
-                  type="text"
-                  autoComplete="username"
-                  required
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary/50 sm:text-sm"
-                  value={registerForm.username}
-                  onChange={handleChange}
-                  required
-                  aria-label="Nome de Usuário"
-                />
-              </div>
-            </div>
             
             <Button 
               type="submit" 
@@ -212,28 +185,3 @@ export const RegisterForm = () => {
     </Card>
   );
 };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!form.username) {
-      toast.error("Nome de usuário é obrigatório");
-      return;
-    }
-    setLoading(true);
-    try {
-      const { user, error } = await signUpWithEmail(form.email, form.password, form.username);
-      if (error) {
-        toast.error(error.message);
-      } else {
-        toast.success("Conta criada com sucesso!");
-      }
-    } catch (err: any) {
-      toast.error("Erro ao criar conta");
-    } finally {
-      setLoading(false);
-    }
-  };

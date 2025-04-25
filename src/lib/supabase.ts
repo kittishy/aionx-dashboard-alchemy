@@ -60,3 +60,14 @@ export const deleteConnection = async (id: string) => {
     .eq("id", id) as { error: Error | null };
   return { error };
 };
+
+export async function signUpWithEmail(email: string, password: string, username: string) {
+  const { data, error } = await supabase.auth.signUp({
+    email,
+    password,
+    options: {
+      data: { username }
+    }
+  });
+  return { user: data.user, error };
+}

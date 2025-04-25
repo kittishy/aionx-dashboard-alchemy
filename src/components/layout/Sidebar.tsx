@@ -32,13 +32,9 @@ export const Sidebar = ({ onCloseSidebar }: SidebarProps) => {
       aria-label="Menu lateral"
     >
       <div className="flex h-16 items-center justify-between border-b border-border/60 px-4">
-        <div className="flex items-center gap-2">
-          <div className="relative flex h-8 w-8 items-center justify-center overflow-hidden rounded-full bg-primary">
-            <span className="text-sm font-bold text-primary-foreground" aria-hidden="true">A</span>
-          </div>
-          <h2 className="text-lg font-semibold text-sidebar-foreground font-display">
-            <span className="gradient-text">AionX</span>
-          </h2>
+        <div className="flex items-center gap-2 px-4 py-6">
+          <img src="/logo-dashboard.png" alt="Logo AionX" className="h-10 w-10 object-cover rounded-full" />
+          <span className="text-xl font-bold gradient-text font-display">AionX</span>
         </div>
         {isMobile && (
           <Button
@@ -79,6 +75,12 @@ export const Sidebar = ({ onCloseSidebar }: SidebarProps) => {
           </ul>
         </nav>
         
+        <div className="absolute bottom-0 left-0 w-full px-4 py-4 border-t border-border/60 bg-background flex items-center gap-3">
+          <img src="/logo-dashboard.png" alt="Logo AionX" className="h-8 w-8 object-cover rounded-full" />
+          <div className="flex flex-col">
+            <span className="text-sm font-semibold text-sidebar-foreground">{user?.user_metadata?.username || "Usuário"}</span>
+          </div>
+        </div>
         <div className="px-2 mt-auto">
           {user && (
             <div className="mb-4 rounded-lg bg-muted/50 p-3">

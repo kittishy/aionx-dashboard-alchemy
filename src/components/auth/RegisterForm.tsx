@@ -29,14 +29,10 @@ export const RegisterForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
-  const form = useForm<RegisterFormValues>({
-    resolver: zodResolver(registerSchema),
-    defaultValues: {
-      email: "",
-      password: "",
-      confirmPassword: "",
-    },
+  const [form, setForm] = useState({
+    email: "",
+    password: "",
+    username: ""
   });
 
   const onSubmit = async (data: RegisterFormValues) => {
@@ -153,6 +149,24 @@ export const RegisterForm = () => {
               )}
             />
             
+            <div className="space-y-4">
+              <div>
+                <label htmlFor="username" className="block text-sm font-medium text-gray-700">Nome de Usuário</label>
+                <input
+                  id="username"
+                  name="username"
+                  type="text"
+                  autoComplete="username"
+                  required
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary/50 sm:text-sm"
+                  value={form.username}
+                  onChange={handleChange}
+                  aria-required="true"
+                  aria-label="Nome de Usuário"
+                />
+              </div>
+            </div>
+            
             <Button 
               type="submit" 
               className="w-full h-11 rounded-lg font-medium"
@@ -185,3 +199,28 @@ export const RegisterForm = () => {
     </Card>
   );
 };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!form.username) {
+      toast.error("Nome de usuário é obrigatório");
+      return;
+    }
+    setLoading(true);
+    try {
+      const { user, error } = await signUpWithEmail(form.email, form.password, form.username);
+      if (error) {
+        toast.error(error.message);
+      } else {
+        toast.success("Conta criada com sucesso!");
+      }
+    } catch (err: any) {
+      toast.error("Erro ao criar conta");
+    } finally {
+      setLoading(false);
+    }
+  };

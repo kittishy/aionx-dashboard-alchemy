@@ -74,24 +74,14 @@ export const Sidebar = ({ onCloseSidebar }: SidebarProps) => {
             ))}
           </ul>
         </nav>
-        
-        <div className="absolute bottom-0 left-0 w-full px-4 py-4 border-t border-border/60 bg-background flex items-center gap-3">
-          <img src="/logo-dashboard.png" alt="Logo AionX" className="h-8 w-8 object-cover rounded-full" />
-          <div className="flex flex-col">
-            <span className="text-sm font-semibold text-sidebar-foreground">{user?.user_metadata?.username || "Usuário"}</span>
+        <div className="mt-auto w-full border-t border-border/60 bg-background px-4 py-4 flex flex-col gap-2 items-center">
+          <div className="flex items-center gap-3 w-full">
+            <img src="/logo-dashboard.png" alt="Logo AionX" className="h-8 w-8 object-cover rounded-full" />
+            <span className="text-sm font-semibold text-sidebar-foreground truncate" title={user?.user_metadata?.username || "Usuário"}>{user?.user_metadata?.username || "Usuário"}</span>
           </div>
-        </div>
-        <div className="px-2 mt-auto">
-          {user && (
-            <div className="mb-4 rounded-lg bg-muted/50 p-3">
-              <p className="text-xs font-medium text-foreground/70">Conectado como</p>
-              <p className="truncate text-sm font-medium">{user.email}</p>
-            </div>
-          )}
-          
           <Button
             variant="outline"
-            className="w-full justify-start gap-2 border-border/60 bg-transparent"
+            className="w-full justify-start gap-2 border-border/60 bg-transparent mt-2 focus-visible:ring-2 focus-visible:ring-primary"
             onClick={handleSignOut}
             aria-label="Encerrar sessão"
           >

@@ -1,20 +1,18 @@
-
 import { useTheme } from "@/contexts/ThemeContext"
 import { useAuth } from "@/contexts/AuthContext"
 import { Navigate, Outlet } from "react-router-dom"
 import { Sidebar } from "@/components/layout/Sidebar"
 import { Toaster } from "@/components/ui/toaster"
-import { Bell, Menu, Moon, Search, Sun } from "lucide-react"
+import { Discord, Moon, Search, Sun } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { useState } from "react";
 
 export const MainLayout = () => {
   const { theme, toggleTheme } = useTheme();
   const { user, loading } = useAuth();
 
-  // Se estiver carregando, mostra um indicador de carregamento
   if (loading) {
     return (
       <div className="flex h-screen w-full items-center justify-center bg-background">
@@ -26,7 +24,6 @@ export const MainLayout = () => {
     );
   }
 
-  // Se não estiver autenticado, redireciona para a página de login
   if (!user) {
     return <Navigate to="/login" replace />;
   }
@@ -73,12 +70,10 @@ export const MainLayout = () => {
               variant="ghost"
               size="icon"
               className="relative rounded-full"
-              title="Notificações"
+              title="Suporte no Discord"
+              onClick={() => window.open("https://discord.gg/aFt6bQJ7Rs", "_blank")}
             >
-              <Bell className="h-5 w-5" />
-              <span className="absolute -right-0.5 -top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground">
-                3
-              </span>
+              <Discord className="h-5 w-5" />
             </Button>
             
             <Button

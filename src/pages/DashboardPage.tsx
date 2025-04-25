@@ -15,7 +15,6 @@ import { Connection } from "@/types";
 const DashboardPage = () => {
   const { user } = useAuth();
   const [connections, setConnections] = useState<Connection[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
   const [activeCount, setActiveCount] = useState(0);
   const [totalCount, setTotalCount] = useState(0);
 
@@ -36,9 +35,11 @@ const DashboardPage = () => {
         setActiveCount(connectionsData.filter((conn) => conn.active).length || 0);
         setTotalCount(connectionsData.length || 0);
       } catch (error) {
-        console.error("Error fetching connections:", error);
-      } finally {
-        setIsLoading(false);
+        toast.error("Erro ao carregar conexões");
+      }
+      
+      if (!user) {
+        toast.error("Usuário não autenticado");
       }
     };
 
@@ -74,11 +75,11 @@ const DashboardPage = () => {
             <CardDescription>Total de conexões ativas no momento</CardDescription>
           </CardHeader>
           <CardContent className="pt-2">
-            {isLoading ? (
+            {!user ? (
               <div className="flex h-12 items-center" aria-live="polite" role="status">
                 <Loader2 className="h-5 w-5 animate-spin text-primary" />
-                <span className="sr-only">Carregando contagem de conexões ativas</span>
-              </div>
+              <span className="sr-only">Carregando...</span>
+            </div>
             ) : (
               <div className="flex items-end gap-2">
                 <span className="text-3xl font-bold" aria-label={`${activeCount} conexões ativas`}>{activeCount}</span>
@@ -99,11 +100,11 @@ const DashboardPage = () => {
             <CardDescription>Número total de conexões configuradas</CardDescription>
           </CardHeader>
           <CardContent className="pt-2">
-            {isLoading ? (
+            {!user ? (
               <div className="flex h-12 items-center" aria-live="polite" role="status">
                 <Loader2 className="h-5 w-5 animate-spin text-primary" />
-                <span className="sr-only">Carregando contagem total de conexões</span>
-              </div>
+                <span className="sr-only">Carregando...</span>
+            </div>
             ) : (
               <div className="flex items-end gap-2">
                 <span className="text-3xl font-bold" aria-label={`${totalCount} conexões configuradas`}>{totalCount}</span>
@@ -147,7 +148,7 @@ const DashboardPage = () => {
             <CardDescription>Suas últimas conexões configuradas</CardDescription>
           </CardHeader> 
           <CardContent>
-            {isLoading ? (
+            {!user ? (
               <div className="flex h-48 items-center justify-center" aria-live="polite" role="status">
                 <Loader2 className="h-6 w-6 animate-spin text-primary" />
                 <span className="sr-only">Carregando conexões recentes</span>

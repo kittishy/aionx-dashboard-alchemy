@@ -3,7 +3,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { getUserConnections } from "@/lib/supabase";
 import { useEffect, useState } from "react";
-import { Connection, Connections } from "@/types";
+import { Connection } from "@/types"; // Corrected import
 import { Activity, ArrowRight, ChevronRight, Loader2, Plus, Server, SquareArrowOutUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";

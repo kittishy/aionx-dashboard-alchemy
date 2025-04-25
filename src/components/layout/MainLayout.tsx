@@ -3,7 +3,7 @@ import { useAuth } from "@/contexts/AuthContext"
 import { Navigate, Outlet } from "react-router-dom"
 import { Sidebar } from "@/components/layout/Sidebar"
 import { Toaster } from "@/components/ui/toaster"
-import { Discord, Moon, Search, Sun } from "lucide-react"
+import { discord, Menu, Moon, Search, Sun } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
@@ -73,7 +73,7 @@ export const MainLayout = () => {
               title="Suporte no Discord"
               onClick={() => window.open("https://discord.gg/aFt6bQJ7Rs", "_blank")}
             >
-              <Discord className="h-5 w-5" />
+              <discord className="h-5 w-5" />
             </Button>
             
             <Button

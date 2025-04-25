@@ -7,6 +7,7 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel } fr
 import { Switch } from "@/components/ui/switch";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useTheme } from "@/contexts/ThemeContext";
+import { toast } from "sonner";
 
 const settingsSchema = z.object({
   darkMode: z.boolean(),
@@ -33,19 +34,20 @@ const SettingsPage = () => {
     }
     
     // Aqui você pode salvar outras configurações no futuro
+    toast.success("Configurações salvas com sucesso!");
     console.log("Settings updated:", data);
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6 animate-fade-in">
       <div>
         <h2 className="text-2xl font-bold tracking-tight lg:text-3xl">Configurações</h2>
-        <p className="hidden text-muted-foreground lg:block">
+        <p className="text-muted-foreground mt-1">
           Gerencie as configurações da sua dashboard 
         </p>
       </div>
       
-      <Card className="border-border">
+      <Card className="border-border shadow-subtle">
         <CardHeader>
           <CardTitle>Preferências</CardTitle>
           <CardDescription>
@@ -55,25 +57,27 @@ const SettingsPage = () => {
         
         <CardContent>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
               <FormField
                 control={form.control}
                 name="darkMode"
                 render={({ field }) => ( 
                   <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
                     <div className="space-y-0.5">
-                      <FormLabel className="text-base">Tema Escuro</FormLabel>
+                      <FormLabel className="text-base" htmlFor="darkMode">Tema Escuro</FormLabel>
                       <FormDescription>
                         Ativar o tema escuro para a interface
                       </FormDescription>
                     </div>
                     <FormControl>
                       <Switch
+                        id="darkMode"
                         checked={field.value}
                         onCheckedChange={(checked) => {
                           field.onChange(checked);
                           toggleTheme();
                         }}
+                        aria-label="Ativar tema escuro"
                       />
                     </FormControl>
                   </FormItem>
@@ -86,15 +90,17 @@ const SettingsPage = () => {
                 render={({ field }) => ( 
                   <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
                     <div className="space-y-0.5">
-                      <FormLabel className="text-base">Conexão Automática</FormLabel>
+                      <FormLabel className="text-base" htmlFor="autoConnect">Conexão Automática</FormLabel>
                       <FormDescription>
                         Conectar automaticamente aos canais quando o bot iniciar
                       </FormDescription>
                     </div>
                     <FormControl>
                       <Switch
+                        id="autoConnect"
                         checked={field.value}
                         onCheckedChange={field.onChange}
+                        aria-label="Ativar conexão automática"
                       />
                     </FormControl>
                   </FormItem>

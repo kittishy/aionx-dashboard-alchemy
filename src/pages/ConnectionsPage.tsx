@@ -11,19 +11,29 @@ const ConnectionsPage = () => {
   };
   
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-fade-in">
       <div>
-        <h2 className="text-2xl lg:text-3xl font-bold tracking-tight">Conexões</h2>
-        <p className="text-muted-foreground">
+        <h2 className="text-2xl font-bold tracking-tight lg:text-3xl" tabIndex={0}>Conexões</h2>
+        <p className="text-muted-foreground mt-1">
           Gerencie suas conexões com servidores do Discord
         </p>
       </div>
       
-      <div className="grid gap-6 grid-cols-1 lg:grid-cols-2">
-        <ConnectionForm onSuccess={handleConnectionAdded} />
-        <div className="space-y-2 lg:space-y-4">
-          <h3 className="text-lg lg:text-xl font-medium">Suas Conexões</h3>
-          <ConnectionList refreshTrigger={refreshTrigger} />
+      <div className="grid gap-6 md:grid-cols-1 lg:grid-cols-2">
+        <div className="order-2 lg:order-1">
+          <h3 className="text-lg font-medium mb-4" id="connection-list-heading">Suas Conexões</h3>
+          <ConnectionList 
+            refreshTrigger={refreshTrigger}
+            aria-labelledby="connection-list-heading"
+          />
+        </div>
+        
+        <div className="order-1 lg:order-2">
+          <h3 className="text-lg font-medium mb-4" id="connection-form-heading">Adicionar Conexão</h3>
+          <ConnectionForm 
+            onSuccess={handleConnectionAdded}
+            aria-labelledby="connection-form-heading"
+          />
         </div>
       </div>
     </div>

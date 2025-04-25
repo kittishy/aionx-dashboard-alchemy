@@ -74,18 +74,35 @@ export const Sidebar = ({ onCloseSidebar }: SidebarProps) => {
             ))}
           </ul>
         </nav>
-        <div className="mt-auto w-full border-t border-border/60 bg-background px-4 py-4 flex flex-col gap-2 items-center">
-          <div className="flex items-center gap-3 w-full">
-            <img src="/logo-dashboard.png" alt="Logo AionX" className="h-8 w-8 object-cover rounded-full" />
-            <span className="text-sm font-semibold text-sidebar-foreground truncate" title={user?.user_metadata?.username || "Usuário"}>{user?.user_metadata?.username || "Usuário"}</span>
+        <div className="mt-auto w-full border-t border-border/60 px-4 py-4">
+          <div className="flex items-center gap-3 p-2 rounded-lg bg-sidebar-accent/30 mb-3">
+            <div className="relative">
+              <img 
+                src="/logo-dashboard.png" 
+                alt="Avatar do usuário" 
+                className="h-10 w-10 object-cover rounded-full border-2 border-primary/40" 
+              />
+              <div className="absolute -bottom-1 -right-1 h-3.5 w-3.5 rounded-full bg-green-500 border-2 border-sidebar" aria-hidden="true"></div>
+            </div>
+            <div className="flex flex-col">
+              <span 
+                className="text-sm font-semibold text-sidebar-foreground truncate" 
+                title={user?.user_metadata?.username || "Usuário"}
+              >
+                {user?.user_metadata?.username || "Usuário"}
+              </span>
+              <span className="text-xs text-sidebar-foreground/60">Online</span>
+            </div>
           </div>
           <Button
-            variant="outline"
-            className="w-full justify-start gap-2 border-border/60 bg-transparent mt-2 focus-visible:ring-2 focus-visible:ring-primary"
+            variant="ghost"
+            className="w-full justify-start gap-2 text-sidebar-foreground/80 hover:bg-sidebar-accent/50 hover:text-primary hover:shadow-sm transition-all duration-200 rounded-lg py-2.5 focus-visible:ring-2 focus-visible:ring-primary group"
             onClick={handleSignOut}
             aria-label="Encerrar sessão"
           >
-            <LogOut className="h-4 w-4" aria-hidden="true" />
+            <div className="p-1.5 rounded-md bg-sidebar-accent/40 group-hover:bg-primary/10 transition-colors duration-200">
+              <LogOut className="h-4 w-4 group-hover:text-primary transition-colors duration-200" aria-hidden="true" />
+            </div>
             <span>Sair</span>
           </Button>
         </div>

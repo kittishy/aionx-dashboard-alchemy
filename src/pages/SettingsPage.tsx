@@ -11,7 +11,6 @@ import { useTheme } from "@/contexts/ThemeContext";
 const settingsSchema = z.object({
   darkMode: z.boolean(),
   autoConnect: z.boolean(),
-  notifications: z.boolean(),
 });
 
 type SettingsFormValues = z.infer<typeof settingsSchema>;
@@ -24,7 +23,6 @@ const SettingsPage = () => {
     defaultValues: {
       darkMode: theme === "dark",
       autoConnect: false,
-      notifications: true,
     },
   });
 
@@ -56,7 +54,7 @@ const SettingsPage = () => {
         </CardHeader>
         
         <CardContent>
-          <Form {...form} >
+          <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
               <FormField
                 control={form.control}
@@ -91,27 +89,6 @@ const SettingsPage = () => {
                       <FormLabel className="text-base">Conexão Automática</FormLabel>
                       <FormDescription>
                         Conectar automaticamente aos canais quando o bot iniciar
-                      </FormDescription>
-                    </div>
-                    <FormControl>
-                      <Switch
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              
-              <FormField
-                control={form.control}
-                name="notifications"
-                render={({ field }) => ( 
-                  <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-                    <div className="space-y-0.5">
-                      <FormLabel className="text-base">Notificações</FormLabel>
-                      <FormDescription>
-                        Receber notificações sobre eventos do bot
                       </FormDescription>
                     </div>
                     <FormControl>

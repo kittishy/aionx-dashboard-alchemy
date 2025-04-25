@@ -1,9 +1,10 @@
+
 import { useTheme } from "@/contexts/ThemeContext"
 import { useAuth } from "@/contexts/AuthContext"
 import { Navigate, Outlet } from "react-router-dom"
 import { Sidebar } from "@/components/layout/Sidebar"
 import { Toaster } from "@/components/ui/toaster"
-import { Discord, Menu, Moon, Search, Sun } from "lucide-react"
+import { Menu, Moon, Search, Sun } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
@@ -73,7 +74,13 @@ export const MainLayout = () => {
               title="Suporte no Discord"
               onClick={() => window.open("https://discord.gg/aFt6bQJ7Rs", "_blank")}
             >
-              <Discord className="h-5 w-5" />
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
+                <circle cx="9" cy="12" r="1" />
+                <circle cx="15" cy="12" r="1" />
+                <path d="M7.5 7.2C3.7 9.3 3.3 14.1 3 18.7c1.9.5 4 .7 6 .7 2 0 4.1-.2 6-.7" />
+                <path d="M16.5 7.2C20.3 9.3 20.7 14.1 21 18.7c-1.9.5-4 .7-6 .7-2 0-4.1-.2-6-.7" />
+                <path d="M8 7s1.5-2 4-2 4 2 4 2" />
+              </svg>
             </Button>
             
             <Button

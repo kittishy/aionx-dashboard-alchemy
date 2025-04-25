@@ -1,12 +1,10 @@
 
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Eye, EyeOff, UserPlus } from "lucide-react";
@@ -29,25 +27,37 @@ export const RegisterForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [form, setForm] = useState({
+  const [registerForm, setRegisterForm] = useState({
     email: "",
     password: "",
-    username: ""
+    confirmPassword: "",
+    username: "",
   });
 
-  const onSubmit = async (data: RegisterFormValues) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setRegisterForm({ ...registerForm, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    if (!registerForm.username) {
+      toast.error("Nome de usuário é obrigatório");
+      return;
+    }
     setIsLoading(true);
     try {
-      const { success } = await signUp(data.email, data.password);
-      
-      if (success) {
-        toast.success("Conta criada com sucesso! Faça login para continuar.");
+      const { error } = await signUp(registerForm.email, registerForm.password, registerForm.username);
+      if (error) {
+        toast.error(error.message);
+      } else {
+        toast.success("Conta criada com sucesso! Faça login para continuar");
         navigate("/login");
       }
-    } catch (error) {
+    } catch (err: any) {
       toast.error("Falha ao criar conta. Verifique os dados e tente novamente.");
     } finally {
       setIsLoading(false);
+      setRegisterForm({...registerForm, password: "", confirmPassword: ""})
     }
   };
 
@@ -55,13 +65,13 @@ export const RegisterForm = () => {
     <Card className="overflow-hidden border-none shadow-elevated bg-card/80 backdrop-blur-sm animate-fade-in">
       <CardContent className="p-6 sm:p-8">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-6">
             <FormField
-              control={form.control}
+              
               name="email"
-              render={({ field }) => (
+              render={() => (
                 <FormItem>
-                  <FormLabel className="text-foreground/80 font-medium">Email</FormLabel>
+                  <FormLabel htmlFor="email" className="text-foreground/80 font-medium">Email</FormLabel>
                   <FormControl>
                     <Input
                       placeholder="seu.email@exemplo.com"
@@ -69,7 +79,8 @@ export const RegisterForm = () => {
                       autoComplete="email"
                       disabled={isLoading}
                       className="h-11 rounded-lg bg-background/40"
-                      {...field}
+                      value={registerForm.email}
+                      onChange={handleChange}
                     />
                   </FormControl>
                   <FormMessage />
@@ -78,11 +89,11 @@ export const RegisterForm = () => {
             />
             
             <FormField
-              control={form.control}
+              
               name="password"
-              render={({ field }) => (
+              render={() => (
                 <FormItem>
-                  <FormLabel className="text-foreground/80 font-medium">Senha</FormLabel>
+                  <FormLabel htmlFor="password" className="text-foreground/80 font-medium">Senha</FormLabel>
                   <FormControl>
                     <div className="relative">
                       <Input
@@ -91,7 +102,8 @@ export const RegisterForm = () => {
                         autoComplete="new-password"
                         disabled={isLoading}
                         className="h-11 rounded-lg bg-background/40"
-                        {...field}
+                        value={registerForm.password}
+                        onChange={handleChange}
                       />
                       <Button
                         type="button"
@@ -114,11 +126,11 @@ export const RegisterForm = () => {
             />
             
             <FormField
-              control={form.control}
+             
               name="confirmPassword"
-              render={({ field }) => (
+              render={() => (
                 <FormItem>
-                  <FormLabel className="text-foreground/80 font-medium">Confirmar Senha</FormLabel>
+                  <FormLabel htmlFor="confirmPassword" className="text-foreground/80 font-medium">Confirmar Senha</FormLabel>
                   <FormControl>
                     <div className="relative">
                       <Input
@@ -127,7 +139,8 @@ export const RegisterForm = () => {
                         autoComplete="new-password"
                         disabled={isLoading}
                         className="h-11 rounded-lg bg-background/40"
-                        {...field}
+                        value={registerForm.confirmPassword}
+                        onChange={handleChange}
                       />
                       <Button
                         type="button"
@@ -159,9 +172,9 @@ export const RegisterForm = () => {
                   autoComplete="username"
                   required
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary/50 sm:text-sm"
-                  value={form.username}
+                  value={registerForm.username}
                   onChange={handleChange}
-                  aria-required="true"
+                  required
                   aria-label="Nome de Usuário"
                 />
               </div>

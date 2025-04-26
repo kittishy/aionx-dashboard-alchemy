@@ -4,7 +4,7 @@ import { Navigate, Outlet } from "react-router-dom";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { Toaster } from "@/components/ui/toaster";
 import { Headset, LogOut, Search } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
@@ -51,14 +51,17 @@ export const MainLayout = () => {
         ))}
       </div>
       
-      {/* Decorative glow effects */}
+      {/* Decorative glow effects */} 
       <div className="absolute left-[-10%] top-[-10%] h-[40%] w-[40%] rounded-full bg-primary/5 blur-[100px]"></div>
       <div className="absolute right-[-5%] bottom-[20%] h-[30%] w-[30%] rounded-full bg-cyan-500/5 blur-[100px]"></div>
 
       <Sidebar />
       
       <main className="flex flex-1 flex-col overflow-hidden bg-background/50 backdrop-blur-sm">
-        <header className="flex h-16 items-center justify-between border-b border-border/40 px-4 sm:px-6">
+        <header className="flex h-16 items-center justify-between border-b border-border/40 px-4 sm:px-6">          
+          <a href="/" className="hidden lg:block">
+            <h1 className="text-lg font-semibold tracking-tight"><span className="gradient-text font-display">AionX</span></h1>
+          </a>
           <div className="flex items-center gap-4 lg:hidden">
             <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-primary/20 shadow-neon">
               <img 
@@ -67,9 +70,12 @@ export const MainLayout = () => {
                 className="h-full w-full object-cover" 
               />
             </div>
-            <h1 className="text-lg font-semibold tracking-tight">
-              <span className="gradient-text font-display">AionX</span>
-            </h1>
+            <a href="/">
+              <h1 className="text-lg font-semibold tracking-tight">
+                <span className="gradient-text font-display">AionX</span>
+              </h1>
+            </a>
+            
           </div>
           
           <div className="hidden flex-1 lg:block max-w-md">

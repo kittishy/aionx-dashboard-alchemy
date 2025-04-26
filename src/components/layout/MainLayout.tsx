@@ -2,9 +2,8 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { Navigate, Outlet } from "react-router-dom";
 import { Sidebar } from "@/components/layout/Sidebar";
-import { Toaster } from "@/components/ui/toaster";
-import { Headset, LogOut, Search } from "lucide-react";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Headset, LogOut, Search, Star } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
@@ -33,7 +32,7 @@ export const MainLayout = () => {
   }, []);
 
   return (
-    <div className="flex h-screen w-full overflow-hidden cosmic-bg">
+    <div className="flex flex-col h-screen w-full overflow-hidden cosmic-bg">
       {/* Animated stars */}
       <div className="stars-container absolute inset-0 pointer-events-none overflow-hidden">
         {[...Array(50)].map((_, i) => (
@@ -123,9 +122,19 @@ export const MainLayout = () => {
         <div className="flex-1 overflow-auto p-4 sm:p-6">
           <Outlet />
         </div>
+
+        {/* Rodapé */}
+        <footer className="fixed bottom-0 left-0 w-full">
+          <div className="p-4 sm:p-6 rounded-t-xl backdrop-blur-lg bg-black/20 flex justify-center transition-all duration-300">
+            <p className="text-sm text-white font-light flex items-center gap-2">
+              © 2025 AionX Dashboard. Todos os direitos reservados.
+              <Star className="h-4 w-4 animate-pulse-slow text-primary" />
+            </p>
+          </div>
+        </footer>
       </main>
       
-      <Toaster />
+      
     </div>
   );
 };

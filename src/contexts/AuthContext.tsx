@@ -6,7 +6,7 @@ interface AuthContextData {
   user: any;
   loading: boolean;
   signIn: (email: string, password: string) => Promise<{ success: boolean }>;
-  signUp: (email: string, password: string, userData?: { username: string }) => Promise<{ success: boolean }>;
+  signUp: (email: string, password: string, userData?: { username: string }) => Promise<{ success: boolean; error?: any }>;
   signOut: () => Promise<void>;
 }
 
@@ -56,12 +56,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const signUp = async (email: string, password: string, userData?: { username: string }) => {
     try {
+      if (!userData?.username) {
+        throw new Error("Nome de usuário é obrigatório");
+      }
+
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
           data: {
-            username: userData?.username || email.split('@')[0],
+            username: userData.username,
           },
         },
       });
@@ -70,7 +74,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       return { success: true };
     } catch (error: any) {
       console.error("Erro ao criar conta:", error.message);
-      throw error;
+      return { success: false, error };
     }
   };
 

@@ -82,7 +82,7 @@ export const MainLayout = () => {
             <Button
               variant="ghost"
               size="icon"
-              className="relative rounded-full"
+              className="relative rounded-full hover:bg-primary/10 text-primary"
               onClick={() => window.open('https://discord.gg/your-support-server', '_blank')}
               title="Suporte"
             >
@@ -93,10 +93,10 @@ export const MainLayout = () => {
               variant="ghost"
               size="icon"
               onClick={toggleTheme}
-              className="rounded-full"
+              className="rounded-full hover:bg-primary/10"
               title={theme === "dark" ? "Mudar para tema claro" : "Mudar para tema escuro"}
             >
-              {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+              {theme === "dark" ? <Sun className="h-5 w-5 text-yellow-400" /> : <Moon className="h-5 w-5" />}
             </Button>
             
             <Avatar className="h-9 w-9 border-2 border-primary shadow-neon">

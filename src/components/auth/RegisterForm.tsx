@@ -13,15 +13,9 @@ import { Eye, EyeOff, UserPlus } from "lucide-react";
 import { toast } from "sonner";
 
 const registerSchema = z.object({
-  username: z.string().min(3, { message: "Nome de usuário deve ter pelo menos 3 caracteres" })
-    .max(20, { message: "Nome de usuário deve ter no máximo 20 caracteres" })
-    .regex(/^[a-zA-Z0-9_]+$/, { message: "Nome de usuário deve conter apenas letras, números e underscores" }),
+  username: z.string().min(3, { message: "O nome de usuário deve ter pelo menos 3 caracteres" }),
   email: z.string().email({ message: "Email inválido" }),
   password: z.string().min(6, { message: "A senha deve ter pelo menos 6 caracteres" }),
-  confirmPassword: z.string(),
-}).refine(data => data.password === data.confirmPassword, {
-  message: "As senhas não coincidem",
-  path: ["confirmPassword"],
 });
 
 type RegisterFormValues = z.infer<typeof registerSchema>;
@@ -31,7 +25,6 @@ export const RegisterForm = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const form = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
@@ -39,31 +32,24 @@ export const RegisterForm = () => {
       username: "",
       email: "",
       password: "",
-      confirmPassword: "",
     },
   });
 
   const onSubmit = async (data: RegisterFormValues) => {
     setIsLoading(true);
     try {
-      const { success } = await signUp(data.email, data.password, {
-        username: data.username
+      const { success, error } = await signUp(data.email, data.password, { 
+        username: data.username 
       });
       
       if (success) {
-        toast.success("Conta criada com sucesso! Faça login para continuar.");
+        toast.success("Conta criada com sucesso!");
         navigate("/login");
+      } else {
+        toast.error(error?.message || "Falha ao criar conta. Tente novamente.");
       }
     } catch (error: any) {
-      let errorMessage = "Falha ao criar conta. Verifique os dados e tente novamente.";
-      
-      if (error.message?.includes("already registered")) {
-        errorMessage = "Este email já está registrado. Tente fazer login.";
-      } else if (error.message) {
-        errorMessage = error.message;
-      }
-      
-      toast.error(errorMessage);
+      toast.error(error.message || "Falha ao criar conta. Tente novamente.");
     } finally {
       setIsLoading(false);
     }
@@ -73,17 +59,16 @@ export const RegisterForm = () => {
     <Card className="overflow-hidden border-none shadow-elevated cosmic-card animate-fade-in">
       <CardContent className="p-6 sm:p-8">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <FormField
               control={form.control}
               name="username"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-foreground/80 font-medium">Nome de usuário</FormLabel>
+                  <FormLabel className="text-foreground/80 font-medium">Nome de Usuário</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="seu_usuario"
-                      type="text"
+                      placeholder="seu_username"
                       autoComplete="username"
                       disabled={isLoading}
                       className="h-11 rounded-lg bg-background/40 border-white/10"
@@ -152,42 +137,6 @@ export const RegisterForm = () => {
               )}
             />
             
-            <FormField
-              control={form.control}
-              name="confirmPassword"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-foreground/80 font-medium">Confirmar Senha</FormLabel>
-                  <FormControl>
-                    <div className="relative">
-                      <Input
-                        placeholder="••••••••"
-                        type={showConfirmPassword ? "text" : "password"}
-                        autoComplete="new-password"
-                        disabled={isLoading}
-                        className="h-11 rounded-lg bg-background/40 border-white/10"
-                        {...field}
-                      />
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="icon"
-                        className="absolute right-0 top-0 h-full px-3 text-muted-foreground hover:text-foreground"
-                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                      >
-                        {showConfirmPassword ? (
-                          <EyeOff className="h-4 w-4" />
-                        ) : (
-                          <Eye className="h-4 w-4" />
-                        )}
-                      </Button>
-                    </div>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            
             <Button 
               type="submit" 
               className="w-full h-11 rounded-lg font-medium cosmic-button"
@@ -196,7 +145,7 @@ export const RegisterForm = () => {
               {isLoading ? (
                 <div className="flex items-center gap-2">
                   <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent"></div>
-                  <span>Criando conta...</span>
+                  <span>Registrando...</span>
                 </div>
               ) : (
                 <div className="flex items-center gap-2">
@@ -213,7 +162,7 @@ export const RegisterForm = () => {
         <p className="text-sm text-muted-foreground">
           Já tem uma conta?{" "}
           <Link to="/login" className="text-primary font-medium hover:underline hover:text-primary/80 transition-colors">
-            Faça login
+            Entrar
           </Link>
         </p>
       </CardFooter>

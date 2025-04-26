@@ -9,9 +9,11 @@ import {
   Settings,
   LogOut
 } from "lucide-react";
+import { useState } from "react";
 
 export const Sidebar = () => {
   const { user, signOut } = useAuth();
+  const [collapsed, setCollapsed] = useState(false);
 
   if (!user) return null;
 
@@ -81,7 +83,7 @@ export const Sidebar = () => {
                   {user.email}
                 </p>
                 <p className="text-xs text-muted-foreground truncate">
-                  {user.username}
+                  {user.user_metadata?.username || "Usuário"}
                 </p>
               </div>
               <Button

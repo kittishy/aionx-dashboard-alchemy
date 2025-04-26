@@ -8,12 +8,12 @@ import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Eye, EyeOff, UserPlus } from "lucide-react";
 import { toast } from "sonner";
 
 const registerSchema = z.object({
-  username: z.string().min(3, { message: "O nome de usuário deve ter pelo menos 3 caracteres" }),
+  username: z.string().min(3, { message: "Nome de usuário deve ter pelo menos 3 caracteres" }),
   email: z.string().email({ message: "Email inválido" }),
   password: z.string().min(6, { message: "A senha deve ter pelo menos 6 caracteres" }),
 });
@@ -43,13 +43,18 @@ export const RegisterForm = () => {
       });
       
       if (success) {
-        toast.success("Conta criada com sucesso!");
+        toast.success("Conta criada com sucesso! Por favor, verifique seu email para ativar sua conta.");
         navigate("/login");
       } else {
-        toast.error(error?.message || "Falha ao criar conta. Tente novamente.");
+        if (error?.message.includes("already registered")) {
+          toast.error("Este email já está registrado. Tente fazer login.");
+        } else {
+          toast.error(error?.message || "Falha ao criar conta");
+        }
       }
-    } catch (error: any) {
-      toast.error(error.message || "Falha ao criar conta. Tente novamente.");
+    } catch (error) {
+      console.error(error);
+      toast.error("Falha ao criar conta. Tente novamente.");
     } finally {
       setIsLoading(false);
     }
@@ -57,6 +62,10 @@ export const RegisterForm = () => {
 
   return (
     <Card className="overflow-hidden border-none shadow-elevated cosmic-card animate-fade-in">
+      <CardHeader className="pb-0">
+        <CardTitle className="gradient-text text-xl text-center">Criar sua conta</CardTitle>
+      </CardHeader>
+      
       <CardContent className="p-6 sm:p-8">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -68,8 +77,7 @@ export const RegisterForm = () => {
                   <FormLabel className="text-foreground/80 font-medium">Nome de Usuário</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="seu_username"
-                      autoComplete="username"
+                      placeholder="seu_usuario"
                       disabled={isLoading}
                       className="h-11 rounded-lg bg-background/40 border-white/10"
                       {...field}
@@ -90,7 +98,6 @@ export const RegisterForm = () => {
                     <Input
                       placeholder="seu.email@exemplo.com"
                       type="email"
-                      autoComplete="email"
                       disabled={isLoading}
                       className="h-11 rounded-lg bg-background/40 border-white/10"
                       {...field}
@@ -112,7 +119,6 @@ export const RegisterForm = () => {
                       <Input
                         placeholder="••••••••"
                         type={showPassword ? "text" : "password"}
-                        autoComplete="new-password"
                         disabled={isLoading}
                         className="h-11 rounded-lg bg-background/40 border-white/10"
                         {...field}
@@ -145,7 +151,7 @@ export const RegisterForm = () => {
               {isLoading ? (
                 <div className="flex items-center gap-2">
                   <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent"></div>
-                  <span>Registrando...</span>
+                  <span>Criando conta...</span>
                 </div>
               ) : (
                 <div className="flex items-center gap-2">
@@ -162,7 +168,7 @@ export const RegisterForm = () => {
         <p className="text-sm text-muted-foreground">
           Já tem uma conta?{" "}
           <Link to="/login" className="text-primary font-medium hover:underline hover:text-primary/80 transition-colors">
-            Entrar
+            Faça login
           </Link>
         </p>
       </CardFooter>

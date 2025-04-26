@@ -1,12 +1,13 @@
 
 import React, { createContext, useState, useEffect, useContext } from "react";
 import { supabase } from "@/lib/supabase";
+import { toast } from "sonner";
 
 interface AuthContextData {
   user: any;
   loading: boolean;
   signIn: (email: string, password: string) => Promise<{ success: boolean }>;
-  signUp: (email: string, password: string, userData?: { username: string }) => Promise<{ success: boolean; error?: any }>;
+  signUp: (email: string, password: string, userData: { username: string }) => Promise<{ success: boolean; error?: any }>;
   signOut: () => Promise<void>;
 }
 
@@ -46,7 +47,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         password,
       });
 
-      if (error) throw error;
+      if (error) {
+        toast.error("Falha ao entrar: " + error.message);
+        throw error;
+      }
+      
+      toast.success("Login realizado com sucesso!");
       return { success: true };
     } catch (error: any) {
       console.error("Erro ao fazer login:", error.message);
@@ -54,9 +60,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const signUp = async (email: string, password: string, userData?: { username: string }) => {
+  const signUp = async (email: string, password: string, userData: { username: string }) => {
     try {
       if (!userData?.username) {
+        toast.error("Nome de usuário é obrigatório");
         throw new Error("Nome de usuário é obrigatório");
       }
 
@@ -70,7 +77,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         },
       });
 
-      if (error) throw error;
+      if (error) {
+        toast.error("Falha ao criar conta: " + error.message);
+        throw error;
+      }
+      
+      toast.success("Conta criada com sucesso! Por favor, verifique seu e-mail.");
       return { success: true };
     } catch (error: any) {
       console.error("Erro ao criar conta:", error.message);
@@ -81,8 +93,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const signOut = async () => {
     try {
       await supabase.auth.signOut();
+      toast.success("Sessão encerrada com sucesso!");
     } catch (error) {
       console.error("Erro ao fazer logout:", error);
+      toast.error("Erro ao encerrar a sessão");
     }
   };
 

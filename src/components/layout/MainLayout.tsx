@@ -4,14 +4,15 @@ import { useAuth } from "@/contexts/AuthContext";
 import { Navigate, Outlet } from "react-router-dom";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { Toaster } from "@/components/ui/toaster";
-import { Bell, Headset, Search, Moon, Sun } from "lucide-react";
+import { Bell, Headset, LogOut, Search, Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
 export const MainLayout = () => {
   const { theme, toggleTheme } = useTheme();
-  const { user, loading } = useAuth();
+  const { user, loading, signOut } = useAuth();
 
   if (loading) {
     return (
@@ -99,11 +100,24 @@ export const MainLayout = () => {
               {theme === "dark" ? <Sun className="h-5 w-5 text-yellow-400" /> : <Moon className="h-5 w-5" />}
             </Button>
             
-            <Avatar className="h-9 w-9 border-2 border-primary shadow-neon">
-              <AvatarFallback className="bg-primary/20 text-primary">
-                {user?.email?.charAt(0).toUpperCase() || "U"}
-              </AvatarFallback>
-            </Avatar>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Avatar className="h-9 w-9 border-2 border-primary shadow-neon cursor-pointer">
+                  <AvatarFallback className="bg-primary/20 text-primary">
+                    {user?.email?.charAt(0).toUpperCase() || "U"}
+                  </AvatarFallback>
+                </Avatar>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="cosmic-card">
+                <DropdownMenuItem className="text-sm text-muted-foreground opacity-70 cursor-default">
+                  {user.email}
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={signOut} className="text-destructive flex items-center gap-2">
+                  <LogOut className="h-4 w-4" />
+                  <span>Sair</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </header>
         

@@ -1,13 +1,12 @@
-
-import { useTheme } from "@/contexts/ThemeContext";
 import { RegisterForm } from "@/components/auth/RegisterForm";
 import { Button } from "@/components/ui/button";
-import { Moon, Sun } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Navigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const RegisterPage = () => {
-  const { theme, toggleTheme } = useTheme();
+
+
   const { user, loading } = useAuth();
 
   if (loading) {
@@ -24,6 +23,10 @@ const RegisterPage = () => {
   if (user) {
     return <Navigate to="/" replace />;
   }
+
+  useEffect(() => {
+    document.documentElement.classList.add("dark");
+  }, []);
 
   return (
     <div className="flex min-h-screen flex-col cosmic-bg">
@@ -61,13 +64,6 @@ const RegisterPage = () => {
             <span className="gradient-text font-display">AionX</span>
           </h1>
         </div>
-        <Button variant="ghost" size="icon" onClick={toggleTheme} className="rounded-full">
-          {theme === "dark" ? (
-            <Sun className="h-5 w-5 text-yellow-400" />
-          ) : (
-            <Moon className="h-5 w-5" />
-          )}
-        </Button>
       </header>
       
       <main className="flex flex-1 items-center justify-center p-6 z-10">

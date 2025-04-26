@@ -1,123 +1,84 @@
 
-import { createContext, useContext, useEffect, useState } from "react";
-import { getCurrentUser, signIn, signOut, signUp, supabase } from "@/lib/supabase";
-import { User } from "@/types";
-import { useToast } from "@/hooks/use-toast";
+import React, { createContext, useState, useEffect, useContext } from "react";
+import { supabase } from "@/lib/supabase";
 
-interface AuthContextType {
-  user: User | null;
+interface AuthContextData {
+  user: any;
   loading: boolean;
-  signUp: (email: string, password: string) => Promise<{ success: boolean; error: any }>;
-  signIn: (email: string, password: string) => Promise<{ success: boolean; error: any }>;
+  signIn: (email: string, password: string) => Promise<{ success: boolean }>;
+  signUp: (email: string, password: string, userData?: { username: string }) => Promise<{ success: boolean }>;
   signOut: () => Promise<void>;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
-export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null);
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const { toast } = useToast();
 
   useEffect(() => {
-    // Verificar o usuário atual quando o componente é montado
-    const checkUser = async () => {
-      try {
-        const { user, error } = await getCurrentUser();
-        if (error) throw error;
-        setUser(user as unknown as User);
-      } catch (error) {
-        console.error("Error checking user:", error);
-        setUser(null);
-      } finally {
-        setLoading(false);
-      }
-    };
+    // Verificar se já existe uma sessão ativa
+    const checkSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      setUser(session?.user || null);
+      setLoading(false);
 
-    // Setup auth state listener
-    const { data: authListener } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
-        if (session?.user) {
-          setUser(session.user as unknown as User);
-        } else {
-          setUser(null);
+      // Configurar listener para mudanças na autenticação
+      const { data: { subscription } } = supabase.auth.onAuthStateChange(
+        (_event, session) => {
+          setUser(session?.user || null);
         }
-        setLoading(false);
-      }
-    );
+      );
 
-    checkUser();
-
-    // Cleanup
-    return () => {
-      authListener.subscription.unsubscribe();
+      // Remover listener quando o componente desmontar
+      return () => {
+        subscription.unsubscribe();
+      };
     };
+
+    checkSession();
   }, []);
 
-  const handleSignUp = async (email: string, password: string) => {
+  const signIn = async (email: string, password: string) => {
     try {
-      setLoading(true);
-      const { error } = await signUp(email, password);
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
       if (error) throw error;
-      
-      toast({
-        title: "Conta criada com sucesso",
-        description: "Por favor verifique seu email para confirmar sua conta.",
-      });
-      
-      return { success: true, error: null };
+      return { success: true };
     } catch (error: any) {
-      toast({
-        variant: "destructive",
-        title: "Erro ao criar conta",
-        description: error.message || "Ocorreu um erro ao tentar criar sua conta.",
-      });
-      return { success: false, error };
-    } finally {
-      setLoading(false);
+      console.error("Erro ao fazer login:", error.message);
+      return { success: false };
     }
   };
 
-  const handleSignIn = async (email: string, password: string) => {
+  const signUp = async (email: string, password: string, userData?: { username: string }) => {
     try {
-      setLoading(true);
-      const { error } = await signIn(email, password);
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            username: userData?.username || email.split('@')[0],
+          },
+        },
+      });
+
       if (error) throw error;
-      
-      toast({
-        title: "Login realizado com sucesso",
-        description: "Bem-vindo de volta!",
-      });
-      
-      return { success: true, error: null };
+      return { success: true };
     } catch (error: any) {
-      toast({
-        variant: "destructive",
-        title: "Erro ao fazer login",
-        description: error.message || "Email ou senha incorretos. Tente novamente.",
-      });
-      return { success: false, error };
-    } finally {
-      setLoading(false);
+      console.error("Erro ao criar conta:", error.message);
+      throw error;
     }
   };
 
-  const handleSignOut = async () => {
+  const signOut = async () => {
     try {
-      setLoading(true);
-      await signOut();
-      toast({
-        title: "Logout realizado",
-        description: "Você foi desconectado com sucesso.",
-      });
-    } catch (error: any) {
-      toast({
-        variant: "destructive",
-        title: "Erro ao fazer logout",
-        description: error.message || "Ocorreu um erro ao tentar desconectar.",
-      });
-    } finally {
-      setLoading(false);
+      await supabase.auth.signOut();
+    } catch (error) {
+      console.error("Erro ao fazer logout:", error);
     }
   };
 
@@ -126,9 +87,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       value={{
         user,
         loading,
-        signUp: handleSignUp,
-        signIn: handleSignIn,
-        signOut: handleSignOut,
+        signIn,
+        signUp,
+        signOut,
       }}
     >
       {children}
@@ -138,8 +99,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error("useAuth must be used within an AuthProvider");
+  if (!context) {
+    throw new Error("useAuth deve ser usado dentro de um AuthProvider");
   }
   return context;
 };

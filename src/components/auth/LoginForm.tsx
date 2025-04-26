@@ -41,6 +41,8 @@ export const LoginForm = () => {
       if (success) {
         toast.success("Login realizado com sucesso!");
         navigate("/");
+      } else {
+        toast.error("Email ou senha incorretos. Por favor, tente novamente.");
       }
     } catch (error) {
       toast.error("Falha ao fazer login. Verifique suas credenciais.");
@@ -50,7 +52,7 @@ export const LoginForm = () => {
   };
 
   return (
-    <Card className="overflow-hidden border-none shadow-elevated bg-card/80 backdrop-blur-sm animate-fade-in">
+    <Card className="overflow-hidden border-none shadow-elevated cosmic-card animate-fade-in">
       <CardContent className="p-6 sm:p-8">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -66,7 +68,7 @@ export const LoginForm = () => {
                       type="email"
                       autoComplete="email"
                       disabled={isLoading}
-                      className="h-11 rounded-lg bg-background/40"
+                      className="h-11 rounded-lg bg-background/40 border-white/10"
                       {...field}
                     />
                   </FormControl>
@@ -88,7 +90,7 @@ export const LoginForm = () => {
                         type={showPassword ? "text" : "password"}
                         autoComplete="current-password"
                         disabled={isLoading}
-                        className="h-11 rounded-lg bg-background/40"
+                        className="h-11 rounded-lg bg-background/40 border-white/10"
                         {...field}
                       />
                       <Button
@@ -113,7 +115,7 @@ export const LoginForm = () => {
             
             <Button 
               type="submit" 
-              className="w-full h-11 rounded-lg font-medium"
+              className="w-full h-11 rounded-lg font-medium cosmic-button"
               disabled={isLoading}
             >
               {isLoading ? (

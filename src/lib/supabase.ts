@@ -7,8 +7,14 @@ import { supabase as integratedSupabase } from "@/integrations/supabase/client";
 export const supabase = integratedSupabase;
 
 // Auth helpers
-export const signUp = async (email: string, password: string) => {
-  const { data, error } = await supabase.auth.signUp({ email, password });
+export const signUp = async (email: string, password: string, userData?: { username: string }) => {
+  const { data, error } = await supabase.auth.signUp({ 
+    email, 
+    password,
+    options: {
+      data: userData
+    }
+  });
   return { data, error };
 };
 

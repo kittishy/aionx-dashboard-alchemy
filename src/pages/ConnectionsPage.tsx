@@ -11,29 +11,22 @@ const ConnectionsPage = () => {
   };
   
   return (
-    <div className="space-y-6 animate-fade-in">
+    <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold tracking-tight lg:text-3xl" tabIndex={0}>Conexões</h2>
-        <p className="text-muted-foreground mt-1">
+        <h2 className="text-3xl font-bold tracking-tight gradient-text">Conexões</h2>
+        <p className="text-muted-foreground mt-2">
           Gerencie suas conexões com servidores do Discord
         </p>
       </div>
       
-      <div className="grid gap-6 md:grid-cols-1 lg:grid-cols-2">
-        <div className="order-2 lg:order-1">
-          <h3 className="text-lg font-medium mb-4" id="connection-list-heading">Suas Conexões</h3>
-          <ConnectionList 
-            refreshTrigger={refreshTrigger}
-            aria-labelledby="connection-list-heading"
-          />
-        </div>
-        
-        <div className="order-1 lg:order-2">
-          <h3 className="text-lg font-medium mb-4" id="connection-form-heading">Adicionar Conexão</h3>
-          <ConnectionForm 
-            onSuccess={handleConnectionAdded}
-            aria-labelledby="connection-form-heading"
-          />
+      <div className="grid gap-6 md:grid-cols-2">
+        <ConnectionForm onSuccess={handleConnectionAdded} />
+        <div className="space-y-4">
+          <h3 className="text-xl font-medium flex items-center gap-2">
+            <span className="h-2 w-2 rounded-full bg-primary animate-pulse-slow" aria-hidden="true"></span>
+            Suas Conexões
+          </h3>
+          <ConnectionList refreshTrigger={refreshTrigger} />
         </div>
       </div>
     </div>

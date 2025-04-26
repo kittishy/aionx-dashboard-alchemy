@@ -13,6 +13,9 @@ import { Eye, EyeOff, UserPlus } from "lucide-react";
 import { toast } from "sonner";
 
 const registerSchema = z.object({
+  username: z.string().min(3, { message: "Nome de usuário deve ter pelo menos 3 caracteres" })
+    .max(20, { message: "Nome de usuário deve ter no máximo 20 caracteres" })
+    .regex(/^[a-zA-Z0-9_]+$/, { message: "Nome de usuário deve conter apenas letras, números e underscores" }),
   email: z.string().email({ message: "Email inválido" }),
   password: z.string().min(6, { message: "A senha deve ter pelo menos 6 caracteres" }),
   confirmPassword: z.string(),
@@ -33,6 +36,7 @@ export const RegisterForm = () => {
   const form = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
+      username: "",
       email: "",
       password: "",
       confirmPassword: "",
@@ -42,24 +46,55 @@ export const RegisterForm = () => {
   const onSubmit = async (data: RegisterFormValues) => {
     setIsLoading(true);
     try {
-      const { success } = await signUp(data.email, data.password);
+      const { success } = await signUp(data.email, data.password, {
+        username: data.username
+      });
       
       if (success) {
         toast.success("Conta criada com sucesso! Faça login para continuar.");
         navigate("/login");
       }
-    } catch (error) {
-      toast.error("Falha ao criar conta. Verifique os dados e tente novamente.");
+    } catch (error: any) {
+      let errorMessage = "Falha ao criar conta. Verifique os dados e tente novamente.";
+      
+      if (error.message?.includes("already registered")) {
+        errorMessage = "Este email já está registrado. Tente fazer login.";
+      } else if (error.message) {
+        errorMessage = error.message;
+      }
+      
+      toast.error(errorMessage);
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <Card className="overflow-hidden border-none shadow-elevated bg-card/80 backdrop-blur-sm animate-fade-in">
+    <Card className="overflow-hidden border-none shadow-elevated cosmic-card animate-fade-in">
       <CardContent className="p-6 sm:p-8">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+            <FormField
+              control={form.control}
+              name="username"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-foreground/80 font-medium">Nome de usuário</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="seu_usuario"
+                      type="text"
+                      autoComplete="username"
+                      disabled={isLoading}
+                      className="h-11 rounded-lg bg-background/40 border-white/10"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            
             <FormField
               control={form.control}
               name="email"
@@ -72,7 +107,7 @@ export const RegisterForm = () => {
                       type="email"
                       autoComplete="email"
                       disabled={isLoading}
-                      className="h-11 rounded-lg bg-background/40"
+                      className="h-11 rounded-lg bg-background/40 border-white/10"
                       {...field}
                     />
                   </FormControl>
@@ -94,7 +129,7 @@ export const RegisterForm = () => {
                         type={showPassword ? "text" : "password"}
                         autoComplete="new-password"
                         disabled={isLoading}
-                        className="h-11 rounded-lg bg-background/40"
+                        className="h-11 rounded-lg bg-background/40 border-white/10"
                         {...field}
                       />
                       <Button
@@ -130,7 +165,7 @@ export const RegisterForm = () => {
                         type={showConfirmPassword ? "text" : "password"}
                         autoComplete="new-password"
                         disabled={isLoading}
-                        className="h-11 rounded-lg bg-background/40"
+                        className="h-11 rounded-lg bg-background/40 border-white/10"
                         {...field}
                       />
                       <Button
@@ -155,7 +190,7 @@ export const RegisterForm = () => {
             
             <Button 
               type="submit" 
-              className="w-full h-11 rounded-lg font-medium"
+              className="w-full h-11 rounded-lg font-medium cosmic-button"
               disabled={isLoading}
             >
               {isLoading ? (

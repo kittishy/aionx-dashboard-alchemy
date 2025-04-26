@@ -1,17 +1,16 @@
 
-import { useTheme } from "@/contexts/ThemeContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { Navigate, Outlet } from "react-router-dom";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { Toaster } from "@/components/ui/toaster";
-import { Bell, Headset, LogOut, Search, Moon, Sun } from "lucide-react";
+import { Headset, LogOut, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { useEffect } from "react";
 
 export const MainLayout = () => {
-  const { theme, toggleTheme } = useTheme();
   const { user, loading, signOut } = useAuth();
 
   if (loading) {
@@ -28,6 +27,10 @@ export const MainLayout = () => {
   if (!user) {
     return <Navigate to="/login" replace />;
   }
+
+  useEffect(() => {
+    document.documentElement.classList.add("dark");
+  }, []);
 
   return (
     <div className="flex h-screen w-full overflow-hidden cosmic-bg">
@@ -88,16 +91,6 @@ export const MainLayout = () => {
               title="Suporte"
             >
               <Headset className="h-5 w-5" />
-            </Button>
-            
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={toggleTheme}
-              className="rounded-full hover:bg-primary/10"
-              title={theme === "dark" ? "Mudar para tema claro" : "Mudar para tema escuro"}
-            >
-              {theme === "dark" ? <Sun className="h-5 w-5 text-yellow-400" /> : <Moon className="h-5 w-5" />}
             </Button>
             
             <DropdownMenu>

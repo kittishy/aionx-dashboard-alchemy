@@ -1,0 +1,55 @@
+
+@keyframes twinkle {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+.cosmic-bg {
+  background: radial-gradient(ellipse at top, #1A1F2C 0%, #0A1929 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.cosmic-card {
+  background: rgba(26, 31, 44, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(155, 135, 245, 0.1);
+  box-shadow: 0 8px 32px rgba(15, 23, 42, 0.1);
+}
+
+.cosmic-button {
+  background: linear-gradient(135deg, #0EA5E9 0%, #1EAEDB 100%);
+  box-shadow: 0 0 15px rgba(30, 174, 219, 0.4);
+  transition: all 0.3s ease;
+}
+
+.cosmic-button:hover {
+  box-shadow: 0 0 25px rgba(30, 174, 219, 0.6);
+  transform: translateY(-1px);
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #33C3F0 0%, #0EA5E9 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.shadow-neon {
+  box-shadow: 0 0 15px rgba(30, 174, 219, 0.4);
+}
+
+.star {
+  position: absolute;
+  background: white;
+  border-radius: 50%;
+  animation: twinkle 3s infinite;
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}

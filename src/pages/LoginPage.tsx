@@ -1,10 +1,11 @@
 
 import { LoginForm } from "@/components/auth/LoginForm";
+import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import { Navigate } from "react-router-dom";
-import { Star } from "lucide-react";
+import { useEffect } from "react";
 
-// eslint-disable-next-line react-refresh/only-export-components
+
 const LoginPage = () => {
   const { user, loading } = useAuth();
 
@@ -22,6 +23,10 @@ const LoginPage = () => {
   if (user) {
     return <Navigate to="/" replace />;
   }
+
+  useEffect(() => {
+    document.documentElement.classList.add("dark");
+  }, []);
 
   return (
     <div className="flex min-h-screen flex-col cosmic-bg">
@@ -75,15 +80,12 @@ const LoginPage = () => {
           </div>
         </div>
       </main>
-       {/* Rodapé */}
-       <footer className="fixed bottom-0 left-0 w-full">
-          <div className="p-4 sm:p-6 rounded-t-xl backdrop-blur-lg bg-black/20 flex justify-center transition-all duration-300">
-            <p className="text-sm text-white font-light flex items-center gap-2">
-              © 2025 AionX Dashboard. Todos os direitos reservados.
-              <Star className="h-4 w-4 animate-pulse-slow text-primary" />
-            </p>
+      
+      <footer className="lg:py-6 lg:text-center lg:text-sm hidden lg:block text-muted-foreground z-10">
+        <div className="mx-auto max-w-7xl px-4 lg:px-8">
+          &copy; {new Date().getFullYear()} AionX Dashboard. Todos os direitos reservados.
         </div>
-      </footer>
+      </footer>      
     </div>
   );
 };

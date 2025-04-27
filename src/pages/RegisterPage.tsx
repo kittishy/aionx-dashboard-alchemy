@@ -1,12 +1,10 @@
+
 import { RegisterForm } from "@/components/auth/RegisterForm";
-import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import { Navigate } from "react-router-dom";
 import { useEffect } from "react";
 
 const RegisterPage = () => {
-
-
   const { user, loading } = useAuth();
 
   if (loading) {
@@ -69,9 +67,9 @@ const RegisterPage = () => {
       <main className="flex flex-1 items-center justify-center p-6 z-10">
         <div className="w-full max-w-md space-y-8">
           <div className="text-center">
-            <h2 className="text-3xl font-bold tracking-tighter font-display gradient-text">Crie sua conta</h2>
+            <h2 className="text-3xl font-bold tracking-tighter font-display gradient-text">Autenticação Discord</h2>
             <p className="mt-2 text-muted-foreground">
-              Registre-se para acessar todos os recursos
+              Agora utilizamos apenas autenticação via Discord
             </p>
           </div>
           

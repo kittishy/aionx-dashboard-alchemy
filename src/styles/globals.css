@@ -1,4 +1,3 @@
-
 @keyframes twinkle {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.3; }
@@ -156,17 +155,16 @@
 }
 
 .glow-text {
-  text-shadow: 0 0 10px rgba(30, 174, 219, 0.7);
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
 }
 
-.light .glow-text {
-  text-shadow: 0 0 10px rgba(14, 165, 233, 0.7);
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
 }
 
-/* Focus ring improvements for accessibility */
-:focus-visible {
-  outline: 2px solid rgba(30, 174, 219, 0.7);
-  outline-offset: 2px;
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
 /* High contrast mode enhancements */
@@ -214,4 +212,10 @@
     transform: translateY(0);
     opacity: 1;
   }
+}
+
+/* Focus ring improvements for accessibility */
+:focus-visible {
+  outline: 2px solid rgba(30, 174, 219, 0.7);
+  outline-offset: 2px;
 }

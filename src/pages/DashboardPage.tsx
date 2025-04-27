@@ -1,7 +1,6 @@
 
 import { useAuth } from "@/contexts/AuthContext";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { getUserConnections } from "@/lib/supabase";
 import { useEffect, useState } from "react";
 import { Activity, ChevronRight, Loader2, Plus, Server, SquareArrowOutUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -9,41 +8,12 @@ import { Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 
-// Importação correta do tipo Connection
-import { Connection } from "@/types";
-
 const DashboardPage = () => {
   const { user } = useAuth();
-  const [connections, setConnections] = useState<Connection[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [connections, setConnections] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [activeCount, setActiveCount] = useState(0);
   const [totalCount, setTotalCount] = useState(0);
-
-  useEffect(() => {
-    const fetchConnections = async () => {
-      if (!user) return;
-      
-      try {
-        const { data, error } = await getUserConnections(user.id);
-        
-        if (error) {
-          toast.error("Erro ao carregar conexões");
-          throw error;
-        }
-        
-        const connectionsData = data || [];
-        setConnections(connectionsData);
-        setActiveCount(connectionsData.filter((conn) => conn.active).length || 0);
-        setTotalCount(connectionsData.length || 0);
-      } catch (error) {
-        console.error("Error fetching connections:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchConnections();
-  }, [user]);
 
   return (
     <div className="space-y-6 animate-fade-in">
@@ -74,17 +44,10 @@ const DashboardPage = () => {
             <CardDescription>Total de conexões ativas no momento</CardDescription>
           </CardHeader>
           <CardContent className="pt-2">
-            {isLoading ? (
-              <div className="flex h-12 items-center" aria-live="polite" role="status">
-                <Loader2 className="h-5 w-5 animate-spin text-primary" />
-                <span className="sr-only">Carregando contagem de conexões ativas</span>
-              </div>
-            ) : (
-              <div className="flex items-end gap-2">
-                <span className="text-3xl font-bold neon-text" aria-label={`${activeCount} conexões ativas`}>{activeCount}</span>
-                <span className="text-sm text-muted-foreground mb-1">de {totalCount}</span>
-              </div>
-            )}
+            <div className="flex items-end gap-2">
+              <span className="text-3xl font-bold neon-text" aria-label="0 conexões ativas">0</span>
+              <span className="text-sm text-muted-foreground mb-1">de 0</span>
+            </div>
           </CardContent>
         </Card>      
 
@@ -99,17 +62,10 @@ const DashboardPage = () => {
             <CardDescription>Número total de conexões configuradas</CardDescription>
           </CardHeader>
           <CardContent className="pt-2">
-            {isLoading ? (
-              <div className="flex h-12 items-center" aria-live="polite" role="status">
-                <Loader2 className="h-5 w-5 animate-spin text-primary" />
-                <span className="sr-only">Carregando contagem total de conexões</span>
-              </div>
-            ) : (
-              <div className="flex items-end gap-2">
-                <span className="text-3xl font-bold neon-text" aria-label={`${totalCount} conexões configuradas`}>{totalCount}</span>
-                <span className="text-sm text-muted-foreground mb-1">conexões</span>
-              </div>
-            )}
+            <div className="flex items-end gap-2">
+              <span className="text-3xl font-bold neon-text" aria-label="0 conexões configuradas">0</span>
+              <span className="text-sm text-muted-foreground mb-1">conexões</span>
+            </div>
           </CardContent>
         </Card>
 
@@ -147,54 +103,16 @@ const DashboardPage = () => {
             <CardDescription>Suas últimas conexões configuradas</CardDescription>
           </CardHeader> 
           <CardContent>
-            {isLoading ? (
-              <div className="flex h-48 items-center justify-center" aria-live="polite" role="status">
-                <Loader2 className="h-6 w-6 animate-spin text-primary" />
-                <span className="sr-only">Carregando conexões recentes</span>
-              </div>
-            ) : connections.length > 0 ? (
-              <div className="space-y-1 mt-2">
-                {connections.slice(0, 5).map((connection) => (
-                  <div 
-                    key={connection.id} 
-                    className="flex items-center justify-between rounded-lg p-2 transition-colors hover:bg-white/5"
-                    tabIndex={0}
-                    aria-label={`Conexão ${connection.name} ${connection.active ? 'ativa' : 'inativa'}`}
-                  >
-                    <div className="flex items-center gap-3">
-                      <div 
-                        className={`h-2 w-2 rounded-full ${connection.active ? "bg-green-500" : "bg-muted-foreground"}`} 
-                        aria-hidden="true"
-                      />
-                      <div>
-                        <p className="font-medium">{connection.name}</p>
-                        <p className="text-xs text-muted-foreground">
-                          {connection.server_id.substring(0, 8)}...
-                        </p>
-                      </div>
-                    </div>
-                    <Badge 
-                      variant={connection.active ? "default" : "outline"} 
-                      className={`text-[10px] ${connection.active ? "bg-primary/70 hover:bg-primary/80" : ""}`}
-                      aria-label={connection.active ? "Status: Ativo" : "Status: Inativo"}
-                    >
-                      {connection.active ? "Ativo" : "Inativo"}
-                    </Badge>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="flex flex-col items-center justify-center py-12 text-muted-foreground">
-                <Server className="h-10 w-10 mb-2 text-muted-foreground/60" aria-hidden="true" />
-                <p className="mb-1">Nenhuma conexão encontrada</p>
-                <Button variant="outline" size="sm" asChild className="mt-2 gap-1 hover:bg-primary/10 border-white/10">
-                  <Link to="/connections" aria-label="Adicionar nova conexão">
-                    <Plus className="h-3 w-3" aria-hidden="true" />
-                    <span>Adicionar Conexão</span>
-                  </Link>
-                </Button>
-              </div>
-            )}
+            <div className="flex flex-col items-center justify-center py-12 text-muted-foreground">
+              <Server className="h-10 w-10 mb-2 text-muted-foreground/60" aria-hidden="true" />
+              <p className="mb-1">Nenhuma conexão encontrada</p>
+              <Button variant="outline" size="sm" asChild className="mt-2 gap-1 hover:bg-primary/10 border-white/10">
+                <Link to="/connections" aria-label="Adicionar nova conexão">
+                  <Plus className="h-3 w-3" aria-hidden="true" />
+                  <span>Adicionar Conexão</span>
+                </Link>
+              </Button>
+            </div>
           </CardContent>
         </Card>
 

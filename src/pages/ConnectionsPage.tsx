@@ -1,17 +1,10 @@
 
-import { useState } from "react";
-import { ConnectionForm } from "@/components/connections/ConnectionForm";
-import { ConnectionList } from "@/components/connections/ConnectionList";
+import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Server } from "lucide-react";
 
 const ConnectionsPage = () => {
-  const [refreshTrigger, setRefreshTrigger] = useState(0);
-  
-  const handleConnectionAdded = () => {
-    setRefreshTrigger((prev) => prev + 1);
-  };
-  
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-fade-in">
       <div>
         <h2 className="text-3xl font-bold tracking-tight gradient-text">Conexões</h2>
         <p className="text-muted-foreground mt-2">
@@ -20,14 +13,17 @@ const ConnectionsPage = () => {
       </div>
       
       <div className="grid gap-6 md:grid-cols-2">
-        <ConnectionForm onSuccess={handleConnectionAdded} />
-        <div className="space-y-4">
-          <h3 className="text-xl font-medium flex items-center gap-2">
-            <span className="h-2 w-2 rounded-full bg-primary animate-pulse-slow" aria-hidden="true"></span>
-            Suas Conexões
-          </h3>
-          <ConnectionList refreshTrigger={refreshTrigger} />
-        </div>
+        <Card className="cosmic-card border-border">
+          <CardHeader>
+            <CardTitle>Sem Conexões</CardTitle>
+            <CardDescription className="flex flex-col items-center justify-center py-12 text-muted-foreground">
+              <Server className="h-10 w-10 mb-4 text-muted-foreground/60" aria-hidden="true" />
+              <p className="text-center">
+                Nenhuma conexão disponível no momento
+              </p>
+            </CardDescription>
+          </CardHeader>
+        </Card>
       </div>
     </div>
   );

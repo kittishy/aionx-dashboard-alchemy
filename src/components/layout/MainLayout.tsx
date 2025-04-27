@@ -1,3 +1,4 @@
+
 import { useAuth } from "@/contexts/AuthContext";
 import { Navigate, Outlet } from "react-router-dom";
 import { Sidebar } from "@/components/layout/Sidebar";
@@ -6,12 +7,12 @@ import { Toaster } from "@/components/ui/toaster";
 import { Headset, LogOut, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useEffect } from "react";
 
 export const MainLayout = () => {
-  const { user, loading, signOut } = useAuth();
+  const { user, discordUser, loading, signOut } = useAuth();
 
   if (loading) {
     return (
@@ -101,17 +102,51 @@ export const MainLayout = () => {
             
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Avatar className="h-9 w-9 border-2 border-primary shadow-neon cursor-pointer">
-                  <AvatarFallback className="bg-primary/20 text-primary">
-                    {user?.email?.charAt(0).toUpperCase() || "U"}
-                  </AvatarFallback>
-                </Avatar>
+                <div className="flex items-center gap-3 cursor-pointer p-1.5 px-2 rounded-full hover:bg-white/5">
+                  <Avatar className="h-9 w-9 border-2 border-primary shadow-neon">
+                    {discordUser?.avatar ? (
+                      <AvatarImage 
+                        src={discordUser.avatar === "default" 
+                          ? `https://cdn.discordapp.com/embed/avatars/${parseInt(discordUser.discriminator) % 5}.png`
+                          : `https://cdn.discordapp.com/avatars/${discordUser.id}/${discordUser.avatar}.png`}
+                        alt={discordUser.username}
+                        className="object-cover"
+                      />
+                    ) : (
+                      <AvatarFallback className="bg-primary/20 text-primary">
+                        {discordUser?.username?.charAt(0).toUpperCase() || user?.email?.charAt(0).toUpperCase() || "U"}
+                      </AvatarFallback>
+                    )}
+                  </Avatar>
+                  <span className="text-sm font-medium hidden md:inline-block">
+                    {discordUser?.username || 'Usuário'}
+                  </span>
+                </div>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="cosmic-card">
-                <DropdownMenuItem className="text-sm text-muted-foreground opacity-70 cursor-default">
-                  {user.email}
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={signOut} className="text-destructive flex items-center gap-2">
+                <div className="flex items-center gap-3 p-3 border-b border-white/10">
+                  <Avatar className="h-10 w-10 shadow-neon">
+                    {discordUser?.avatar ? (
+                      <AvatarImage 
+                        src={discordUser.avatar === "default" 
+                          ? `https://cdn.discordapp.com/embed/avatars/${parseInt(discordUser.discriminator) % 5}.png`
+                          : `https://cdn.discordapp.com/avatars/${discordUser.id}/${discordUser.avatar}.png`}
+                        alt={discordUser?.username}
+                      />
+                    ) : (
+                      <AvatarFallback className="bg-primary/20 text-primary">
+                        {discordUser?.username?.charAt(0).toUpperCase() || user?.email?.charAt(0).toUpperCase() || "U"}
+                      </AvatarFallback>
+                    )}
+                  </Avatar>
+                  <div>
+                    <div className="font-medium">{discordUser?.username || 'Usuário'}</div>
+                    <div className="text-xs text-muted-foreground">
+                      {discordUser ? `Discord ID: ${discordUser.id}` : user?.email || 'Modo de teste'}
+                    </div>
+                  </div>
+                </div>
+                <DropdownMenuItem onClick={signOut} className="text-destructive flex items-center gap-2 cursor-pointer hover:bg-white/5 focus:bg-white/5">
                   <LogOut className="h-4 w-4" />
                   <span>Sair</span>
                 </DropdownMenuItem>

@@ -1,3 +1,4 @@
+
 @keyframes twinkle {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.3; }
@@ -165,6 +166,23 @@
 
 .animate-pulse {
   animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Discord button styles */
+.discord-button {
+  background: linear-gradient(135deg, #5865F2 0%, #4752C4 100%);
+  box-shadow: 0 0 15px rgba(88, 101, 242, 0.4);
+  animation: pulse-discord 4s infinite;
+}
+
+.discord-button:hover {
+  box-shadow: 0 0 25px rgba(88, 101, 242, 0.6);
+  transform: translateY(-1px) scale(1.02);
+}
+
+@keyframes pulse-discord {
+  0%, 100% { box-shadow: 0 0 15px rgba(88, 101, 242, 0.4); }
+  50% { box-shadow: 0 0 25px rgba(88, 101, 242, 0.7); }
 }
 
 /* High contrast mode enhancements */

@@ -1,10 +1,8 @@
 
 import { LoginForm } from "@/components/auth/LoginForm";
-import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import { Navigate } from "react-router-dom";
 import { useEffect } from "react";
-
 
 const LoginPage = () => {
   const { user, loading } = useAuth();
@@ -69,9 +67,9 @@ const LoginPage = () => {
       <main className="flex flex-1 items-center justify-center p-6 z-10">
         <div className="w-full max-w-md space-y-8">
           <div className="text-center">
-            <h2 className="text-2xl lg:text-3xl font-bold tracking-tighter font-display gradient-text lg:block">Bem-vindo de volta</h2>
+            <h2 className="text-2xl lg:text-3xl font-bold tracking-tighter font-display gradient-text lg:block">Bem-vindo ao AionX</h2>
             <p className="mt-2 text-sm lg:text-base text-muted-foreground">
-              Entre com suas credenciais para acessar o dashboard
+              Entre com sua conta Discord para acessar o dashboard
             </p>            
           </div>
           

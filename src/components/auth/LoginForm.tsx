@@ -4,7 +4,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { LogIn } from "lucide-react";
+import { LogIn } from "lucide-react"; // Using LogIn icon instead of custom SVG
 import { toast } from "sonner";
 
 export const LoginForm = () => {
@@ -46,14 +46,7 @@ export const LoginForm = () => {
               </div>
             ) : (
               <div className="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
-                  <circle cx="9" cy="12" r="1"/><circle cx="15" cy="12" r="1"/><path d="M7.5 7.2c.3-1 1.4-1.2 1.4-1.2s1.1-.2 2.1-.2c1 0 2.1.2 2.1.2s1.1.2 1.4 1.2c.3 1 .2 2.3.2 2.3s.2 3.2-2.7 3.2c-2.9 0-2.7-3.2-2.7-3.2s-.1-1.3.2-2.3z"/><path d="M15.5 17a5 5 0 0 0 4 0"/>
-                  <path d="M8.8 14.2c-.4 1.3-1.6 2.1-3 2"/>
-                  <path d="M18.2 14.2c.4 1.3 1.6 2.1 3 2"/><path d="M9 22h6c1 0 1-1 1-1V18H8v3s0 1 1 1z"/>
-                  <path d="M19 4c-1.2-.1-2.2-.1-3-.2-1.8-.1-2.9.5-2.9.5A16 16 0 0 0 8.8 7.5"/>
-                  <path d="m6 10 2-2"/>
-                  <path d="m16 10 2-2"/>
-                </svg>
+                <LogIn className="h-5 w-5" /> {/* Replaced Discord SVG with LogIn icon */}
                 <span>Entrar com Discord</span>
               </div>
             )}

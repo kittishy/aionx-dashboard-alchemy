@@ -13,7 +13,7 @@ import DashboardPage from "@/pages/DashboardPage";
 import ConnectionsPage from "@/pages/ConnectionsPage";
 import SettingsPage from "@/pages/SettingsPage";
 import NotFound from "@/pages/NotFound";
-import { SkipNavLink, SkipNavContent } from "@/components/accessibility/SkipNavLink";
+import { SkipNavLink } from "@/components/accessibility/SkipNavLink";
 import { ErrorBoundary } from "@/components/errors/ErrorBoundary";
 import { Suspense, lazy } from "react";
 import { LoadingScreen } from "@/components/ui/loading-screen";
@@ -51,7 +51,6 @@ const App = () => (
                 
                 {/* Rotas protegidas - o MainLayout fará a verificação de autenticação */}
                 <Route element={<MainLayout />}>
-                  <SkipNavContent />
                   <Route path="/" element={<DashboardPage />} />
                   <Route path="/connections" element={<ConnectionsPage />} />
                   <Route path="/settings" element={<SettingsPage />} />

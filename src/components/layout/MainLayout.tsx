@@ -22,6 +22,7 @@ import {
   CommandItem, 
   CommandList 
 } from "@/components/ui/command";
+import { SkipNavContent } from "@/components/accessibility/SkipNavLink";
 
 export const MainLayout = () => {
   const { user, discordUser, loading, signOut } = useAuth();
@@ -319,6 +320,7 @@ export const MainLayout = () => {
               transition={{ duration: 0.3 }}
               className="p-4 sm:p-6 pb-20"
             >
+              <SkipNavContent />
               <Outlet />
             </motion.div>
           </AnimatePresence>

@@ -15,21 +15,13 @@ import SettingsPage from "@/pages/SettingsPage";
 import NotFound from "@/pages/NotFound";
 import { SkipNavLink } from "@/components/accessibility/SkipNavLink";
 import { ErrorBoundary } from "@/components/errors/ErrorBoundary";
-import { Suspense, lazy } from "react";
-import { LoadingScreen } from "@/components/ui/loading-screen";
 
-// Lazy loaded components para melhorar performance
-const UsersPage = lazy(() => import("@/pages/UsersPage"));
-const NotificationsPage = lazy(() => import("@/pages/NotificationsPage"));
-const StatisticsPage = lazy(() => import("@/pages/StatisticsPage"));
-
-// Configuração react-query com otimizações
+// Configuração react-query com otimizações - sem stateTime longo para reduzir uso de memória
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,
       retry: 1,
-      staleTime: 5 * 60 * 1000, // 5 minutos
     },
   },
 });
@@ -43,7 +35,7 @@ const App = () => (
             <TooltipProvider>
               <SkipNavLink />
               <Toaster />
-              <Sonner position="top-center" expand visibleToasts={5} closeButton richColors />
+              <Sonner position="top-center" closeButton />
               
               <Routes>
                 <Route path="/login" element={<LoginPage />} />
@@ -54,23 +46,6 @@ const App = () => (
                   <Route path="/" element={<DashboardPage />} />
                   <Route path="/connections" element={<ConnectionsPage />} />
                   <Route path="/settings" element={<SettingsPage />} />
-                  
-                  {/* Novas páginas com lazy loading */}
-                  <Route path="/users" element={
-                    <Suspense fallback={<LoadingScreen />}>
-                      <UsersPage />
-                    </Suspense>
-                  } />
-                  <Route path="/statistics" element={
-                    <Suspense fallback={<LoadingScreen />}>
-                      <StatisticsPage />
-                    </Suspense>
-                  } />
-                  <Route path="/notifications" element={
-                    <Suspense fallback={<LoadingScreen />}>
-                      <NotificationsPage />
-                    </Suspense>
-                  } />
                 </Route>
                 
                 {/* Rota padrão - redireciona para a página não encontrada */}

@@ -11,7 +11,6 @@ import { toast } from "sonner";
 
 const settingsSchema = z.object({
   darkMode: z.boolean(),
-  autoConnect: z.boolean(),
 });
 
 type SettingsFormValues = z.infer<typeof settingsSchema>;
@@ -23,7 +22,6 @@ const SettingsPage = () => {
     resolver: zodResolver(settingsSchema),
     defaultValues: {
       darkMode: theme === "dark",
-      autoConnect: false,
     },
   });
 
@@ -33,21 +31,20 @@ const SettingsPage = () => {
       toggleTheme();
     }
     
-    // Aqui você pode salvar outras configurações no futuro
     toast.success("Configurações salvas com sucesso!");
     console.log("Settings updated:", data);
   };
 
   return (
-    <div className="space-y-6 animate-fade-in">
+    <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold tracking-tight lg:text-3xl">Configurações</h2>
+        <h2 className="text-2xl font-bold tracking-tight">Configurações</h2>
         <p className="text-muted-foreground mt-1">
           Gerencie as configurações da sua dashboard 
         </p>
       </div>
       
-      <Card className="border-border shadow-subtle">
+      <Card className="border-border shadow-sm">
         <CardHeader>
           <CardTitle>Preferências</CardTitle>
           <CardDescription>
@@ -78,29 +75,6 @@ const SettingsPage = () => {
                           toggleTheme();
                         }}
                         aria-label="Ativar tema escuro"
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              
-              <FormField
-                control={form.control}
-                name="autoConnect"
-                render={({ field }) => ( 
-                  <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-                    <div className="space-y-0.5">
-                      <FormLabel className="text-base" htmlFor="autoConnect">Conexão Automática</FormLabel>
-                      <FormDescription>
-                        Conectar automaticamente aos canais quando o bot iniciar
-                      </FormDescription>
-                    </div>
-                    <FormControl>
-                      <Switch
-                        id="autoConnect"
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                        aria-label="Ativar conexão automática"
                       />
                     </FormControl>
                   </FormItem>

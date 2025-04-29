@@ -20,6 +20,15 @@
   100% { background-position: 0% 50%; }
 }
 
+@keyframes card-shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
 .cosmic-bg {
   background: radial-gradient(ellipse at top, #1A1F2C 0%, #0A1929 100%);
   position: relative;
@@ -185,6 +194,29 @@
   50% { box-shadow: 0 0 25px rgba(88, 101, 242, 0.7); }
 }
 
+/* Card shimmer effect for loading states */
+.shimmer-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0,
+    rgba(255, 255, 255, 0.1) 20%,
+    rgba(255, 255, 255, 0.2) 40%,
+    rgba(255, 255, 255, 0) 60%
+  );
+  animation: card-shimmer 2s infinite linear;
+}
+
 /* High contrast mode enhancements */
 @media (prefers-contrast: more) {
   .gradient-text {
@@ -232,8 +264,65 @@
   }
 }
 
+/* Animation for page transitions using framer-motion */
+.page-transition-enter {
+  opacity: 0;
+  transform: scale(0.9);
+}
+
+.page-transition-enter-active {
+  opacity: 1;
+  transform: translateX(0);
+  transition: opacity 300ms, transform 300ms;
+}
+
+.page-transition-exit {
+  opacity: 1;
+}
+
+.page-transition-exit-active {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 300ms, transform 300ms;
+}
+
 /* Focus ring improvements for accessibility */
 :focus-visible {
   outline: 2px solid rgba(30, 174, 219, 0.7);
   outline-offset: 2px;
+}
+
+/* Keyboard navigation improvements */
+.keyboard-focus {
+  outline: 2px solid rgba(30, 174, 219, 0.7);
+  outline-offset: 2px;
+}
+
+/* Accessibility improvements */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Skip to main content link for accessibility */
+.skip-to-content {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  padding: 0.5rem 1rem;
+  background-color: #0EA5E9;
+  color: white;
+  z-index: 999;
+  transition: top 0.2s;
+}
+
+.skip-to-content:focus {
+  top: 0;
 }
